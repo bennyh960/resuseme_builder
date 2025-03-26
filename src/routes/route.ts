@@ -7,13 +7,14 @@ import Experience from "../components/Form/experience/Experience";
 import Educations from "../components/Form/education/Education";
 import SkillsSection from "../components/Form/skills/Skills";
 import Test from "../components/Test/Test";
+import Summary from "../components/Form/Summary/Summary";
 
 export const formRoutes: (RouteObject & { label: string })[] = [
   { Component: PersonalInfoForm, path: "/contact", label: "Contact" },
   { Component: Experience, path: "/experience", label: "Experience" },
   { Component: Educations, path: "/education", label: "Education" },
   { Component: SkillsSection, path: "/skills", label: "Skills" },
-  { Component: PersonalInfoForm, path: "/summary", label: "Summary" },
+  { Component: Summary, path: "/summary", label: "Summary" },
   { Component: PersonalInfoForm, path: "/finalize", label: "Finalize" },
 ];
 

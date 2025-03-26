@@ -2,7 +2,7 @@ import TrashIcon from "../../../../assets/TrashIcon";
 import { SkillType } from "../Skills";
 import SliderControl from "../../../../UI/SlideControl/SlideControl";
 import FormField from "../../../../UI/FormField/FormField";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Language } from "../../../../hooks/useCustomContext";
 
 const SkillSingle = ({
@@ -51,14 +51,8 @@ const SkillSingle = ({
 
   return (
     <div className="flex flex-col my-2">
-      <div className="w-full flex ">
-        <div className="basis-[calc(80%-14px)]"></div>
-        <span>Level</span>
-        <span>-</span>
-        <span className="app-btn">{levelMap[skill.level as keyof typeof levelMap][language]}</span>
-      </div>
       <div className="flex w-full gap-5 justify-between items-center">
-        <div className="flex gap-3 basis-[calc(80%-14px)]">
+        <div className="flex gap-3 basis-[calc(80%-14px)] mt-10">
           <button
             onClick={() => onDelete(skill)}
             className="mr-3 flex items-center gap-2 text-blue-400 cursor-pointer hover:text-blue-800 font-medium transition-all duration-200"
@@ -66,11 +60,15 @@ const SkillSingle = ({
             <TrashIcon />
           </button>
           <div className="w-full">
-            <div>x</div>
             <FormField showIcon={false} label={""} id={skill.name} value={localSkillName} onChange={handleNameChange} />
           </div>
         </div>
         <div className="flex flex-col gap-3">
+          <div className="w-full flex ">
+            <span>Level</span>
+            <span>-</span>
+            <span className="app-btn">{levelMap[skill.level as keyof typeof levelMap][language]}</span>
+          </div>
           <SliderControl
             value={skill.level}
             onChange={(position) => {

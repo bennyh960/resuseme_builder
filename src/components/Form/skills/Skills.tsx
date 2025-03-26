@@ -3,11 +3,17 @@ import useCustomContext from "../../../hooks/useCustomContext";
 import PlusIcon from "../../../assets/plusIcon";
 import SkillSingle from "./SkillSingle/SkillSingle";
 import Title from "../../Shared/Title";
+import ToggleButton from "../../../UI/ToggleBtn/ToggleBtn";
 
 export interface SkillType {
   name: string;
   level: number;
 }
+
+export type SkillsObject = {
+  data: SkillType[];
+  showLevel: boolean;
+};
 
 const dict = {
   title: { he: "השכלה", en: "Education" },
@@ -19,22 +25,21 @@ const dict = {
 
 const SkillsSection: React.FC = () => {
   const { skills, setSkills, language } = useCustomContext();
-  console.log("SkillsSection render", { skills });
 
   const handleSkillLevelChange = (index: number, level: number) => {
-    const updatedSkills = [...skills];
+    const updatedSkills = [...skills.data];
     updatedSkills[index].level = level;
 
-    setSkills(updatedSkills);
+    setSkills((prev) => ({ ...prev, data: updatedSkills }));
   };
 
   const handleSkillNameChange = useCallback(
     (index: number, name: string) => {
       setSkills((prev) => {
         // Create a new array with a new object for the specific skill
-        const newSkills = [...prev];
+        const newSkills = [...prev.data];
         newSkills[index] = { ...newSkills[index], name };
-        return newSkills;
+        return { ...prev, data: newSkills };
       });
     },
     [setSkills]
@@ -53,30 +58,35 @@ const SkillsSection: React.FC = () => {
       { he: "הבנה של עקרונות אבטחת מידע", en: "Understanding of Security Principles" },
       { he: "יכולת עבודה בסביבה דינמית", en: "Ability to Work in a Dynamic Environment" },
     ].filter((s1) => {
-      if (skills.find((s2) => s2.name === s1[language])) return false;
+      if (skills.data.find((s2) => s2.name === s1[language])) return false;
       return true;
     });
 
-    const idx = Math.floor(Math.random() * skills.length);
+    const idx = Math.floor(Math.random() * skills.data.length);
     return skillsBank[idx][language];
   };
 
   const handleAddSkill = () => {
-    if (skills.length === 10) alert("max skills is 10");
-
-    setSkills((prev) => [...prev, { level: 3, name: randomSkill() }]);
+    if (skills.data.length === 10) alert("max skills is 10");
+    console.log("xx");
+    const data = [...skills.data, { level: 3, name: randomSkill() }];
+    setSkills((prev) => ({ data, showLevel: prev.showLevel }));
   };
 
   const handleDelete = (skill: SkillType) => {
-    setSkills((prev) => prev.filter((s) => s.name !== skill.name));
+    setSkills((prev) => {
+      const data = prev.data.filter((s) => s.name !== skill.name);
+      return { ...prev, data };
+    });
   };
 
   return (
     <div className="w-full h-full">
       <Title title={dict.title[language]} description={dict.description[language]} />
+      {/* <ToggleButton checked={} onChange={} /> */}
 
       <div className="w-full max-h-[70%] overflow-auto">
-        {skills.map((skill, index) => (
+        {skills.data?.map((skill, index) => (
           <SkillSingle
             onDelete={handleDelete}
             onNameChange={handleSkillNameChange}

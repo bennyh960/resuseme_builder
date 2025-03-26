@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -28,9 +29,10 @@ const ProgressNavigation: React.FC<ProgressNavigationProps> = ({ routes }) => {
                     {route.label}
                   </span>
                   <span
-                    className={`w-5 h-5 bg-white border border-blue-500 rounded-full ${
-                      isActive ? "shadow-custom-1" : ""
-                    }`}
+                    className={clsx(`w-5 h-5 border border-blue-500 rounded-full`, {
+                      "bg-blue-300": isActive,
+                      "bg-white": !isActive,
+                    })}
                   ></span>
                 </div>
               </Link>

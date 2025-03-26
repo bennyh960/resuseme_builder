@@ -57,63 +57,66 @@ const PersonalInfoForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 ">
+    <div className="w-full h-full">
       <Title title={dict.title[language]} description={dict.description[language]} />
-      <div className="flex gap-12 justify-between">
-        <FormField
-          placeholder="Benny"
-          id="firstName"
-          label={labels.personalInfo.firstName[language]}
-          value={personalInfo.firstName}
-          onChange={handleChange}
-        />
-        <FormField
-          placeholder="Hassan"
-          id="lastName"
-          label={labels.personalInfo.lastName[language]}
-          value={personalInfo.lastName}
-          onChange={handleChange}
-        />
-      </div>
 
-      <div className="flex-1/2">
-        <FormField
-          placeholder="Full Stack Developer"
-          id="jobTitle"
-          label={labels.personalInfo.jobTitle[language]}
-          value={personalInfo.jobTitle}
-          onChange={handleChange}
-        />
-      </div>
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-12 justify-between">
+          <FormField
+            placeholder="Benny"
+            id="firstName"
+            label={labels.personalInfo.firstName[language]}
+            value={personalInfo.firstName}
+            onChange={handleChange}
+          />
+          <FormField
+            placeholder="Hassan"
+            id="lastName"
+            label={labels.personalInfo.lastName[language]}
+            value={personalInfo.lastName}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="flex gap-12 justify-between">
-        <FormField
-          placeholder="05x-1234567"
-          id="phone"
-          value={personalInfo.phone}
-          onChange={handleChange}
-          label="Phone"
-        />
-        <FormField
-          placeholder="email@domain.com"
-          id="email"
-          value={personalInfo.email}
-          onChange={handleChange}
-          label="Email"
-        />
-      </div>
+        <div className="flex-1/2">
+          <FormField
+            placeholder="Full Stack Developer"
+            id="jobTitle"
+            label={labels.personalInfo.jobTitle[language]}
+            value={personalInfo.jobTitle}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="flex gap-3 app-btn" onClick={toggleAdditional}>
-        <span>
-          {
-            <Chevron
-              className={`transform transition-transform duration-300 ${
-                isAdditionalVisible ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          }
-        </span>
-        <span>Additional Section</span>
+        <div className="flex gap-12 justify-between">
+          <FormField
+            placeholder="05x-1234567"
+            id="phone"
+            value={personalInfo.phone}
+            onChange={handleChange}
+            label="Phone"
+          />
+          <FormField
+            placeholder="email@domain.com"
+            id="email"
+            value={personalInfo.email}
+            onChange={handleChange}
+            label="Email"
+          />
+        </div>
+
+        <div className="flex gap-3 app-btn" onClick={toggleAdditional}>
+          <span>
+            {
+              <Chevron
+                className={`transform transition-transform duration-300 ${
+                  isAdditionalVisible ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            }
+          </span>
+          <span>Additional Section</span>
+        </div>
       </div>
       <div
         className={`flex flex-col gap-8 overflow-hidden transition-all duration-500 ease-in-out ${
