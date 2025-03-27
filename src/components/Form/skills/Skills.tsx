@@ -17,6 +17,8 @@ export type SkillsObject = {
 
 const dict = {
   title: { he: "השכלה", en: "Education" },
+  showExpLvl: { en: "Show experience level", he: "הראה רמה" },
+  hideExpLvl: { en: "Hide experience level", he: "הסתר רמה" },
   description: {
     he: "הוסיפו את ההשכלה שלכם עד כה , אפילו אם לא סיימתם.",
     en: "Enter your education experience so far, even if you have not graduated.",
@@ -68,7 +70,6 @@ const SkillsSection: React.FC = () => {
 
   const handleAddSkill = () => {
     if (skills.data.length === 10) alert("max skills is 10");
-    console.log("xx");
     const data = [...skills.data, { level: 3, name: randomSkill() }];
     setSkills((prev) => ({ data, showLevel: prev.showLevel }));
   };
@@ -80,12 +81,19 @@ const SkillsSection: React.FC = () => {
     });
   };
 
-  return (
-    <div className="w-full h-full">
-      <Title title={dict.title[language]} description={dict.description[language]} />
-      {/* <ToggleButton checked={} onChange={} /> */}
+  const toggleShowLvl = () => {
+    setSkills((prev) => ({ ...prev, showLevel: !prev.showLevel }));
+  };
 
-      <div className="w-full max-h-[70%] overflow-auto">
+  return (
+    <div className="w-full h-full fade-in">
+      <Title title={dict.title[language]} description={dict.description[language]} />
+      <div className="flex gap-3 items-center">
+        <span className="mb-1">{dict[skills.showLevel ? "showExpLvl" : "hideExpLvl"][language]}</span>
+        <ToggleButton checked={skills.showLevel} onChange={toggleShowLvl} />
+      </div>
+
+      <div className="w-full max-h-[65%] overflow-auto">
         {skills.data?.map((skill, index) => (
           <SkillSingle
             onDelete={handleDelete}

@@ -4,6 +4,10 @@ import { personalInfoInit, PersonalInfoType } from "../components/Form/personalI
 import { ExperienceType, FakeInitExperience } from "../components/Form/experience/ExperienceSingle/ExperienceSingle";
 import { EducationType, FakeInitEducation } from "../components/Form/education/educationSingle/EducationSingle";
 import { SkillsObject } from "../components/Form/skills/Skills";
+import {
+  AdditionalSectionsType,
+  initAdditionalSections,
+} from "../components/Form/additionalSections/AdditionalSections";
 
 export type Language = "en" | "he";
 
@@ -21,6 +25,8 @@ export interface SiteContextType {
   setSkills: Dispatch<SetStateAction<SkillsObject>>;
   summary: string;
   setSummary: Dispatch<SetStateAction<string>>;
+  additionalSections: AdditionalSectionsType;
+  setAdditionalSections: Dispatch<SetStateAction<AdditionalSectionsType>>;
 }
 
 export const SiteContext = createContext<SiteContextType>({} as SiteContextType);
@@ -30,8 +36,13 @@ export const SiteProvider = ({ children }: { children: ReactNode }) => {
   const [experiences, setExperiences] = useLocalStorage<ExperienceType[]>("experiences", [FakeInitExperience]);
   const [educations, setEducations] = useLocalStorage<EducationType[]>("educations", [FakeInitEducation]);
   const [skills, setSkills] = useLocalStorage<SkillsObject>("skills", { showLevel: true, data: [] });
-  const [language, setLanguage] = useState<Language>("en");
   const [summary, setSummary] = useLocalStorage<string>("summary", "");
+  const [additionalSections, setAdditionalSections] = useLocalStorage<AdditionalSectionsType>(
+    "additionalSections",
+    initAdditionalSections
+  );
+
+  const [language, setLanguage] = useState<Language>("en");
   return (
     <SiteContext.Provider
       value={{
@@ -47,6 +58,8 @@ export const SiteProvider = ({ children }: { children: ReactNode }) => {
         setEducations,
         setSkills,
         skills,
+        additionalSections,
+        setAdditionalSections,
       }}
     >
       {children}

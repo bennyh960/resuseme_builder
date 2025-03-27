@@ -19,15 +19,48 @@
   margin: auto;
 }
 
-.card-container {
-  flex: 1;
-  width: 49%;
-  min-width: 350px;
-  height: 100%;
-  padding: 1.5rem 3rem;
+.resume-container {
+  width: 210mm; /* A4 width - full size */
+  max-width: 210mm; /* A4 width - full size */
+  min-width: 210mm; /* A4 width - full size */
+  min-height: 297mm; /* A4 height - full size */
+  max-height: 357mm; /* A4 height - full size */
+  background: white;
+  overflow: hidden;
 }
 
-.circle {
+@media screen {
+  .resume-container {
+    transform: scale(0.7); /* Scales down to 70% for screen viewing */
+    transform-origin: top center; /* Ensures scaling happens from the top center */
+  }
+}
+@media screen and (max-width: 1100px) {
+  .resume-container {
+    transform: scale(0.6); /* Scales down to 70% for screen viewing */
+  }
+}
+@media screen and (max-width: 960px) {
+  .resume-container {
+    transform: scale(0.45); /* Scales down to 70% for screen viewing */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .resume-container {
+    transform: scale(0.7); /* Scales down to 70% for screen viewing */
+  }
+}
+@media screen and (max-width: 576px) {
+  .resume-container {
+    transform: scale(0.45); /* Scales down to 70% for screen viewing */
+  }
+  .preview-wrapper {
+    max-height: 600px;
+  }
+}
+
+circle {
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -37,4 +70,19 @@
 
 .app-btn {
   @apply flex items-center gap-2 text-blue-400 cursor-pointer hover:text-blue-800 font-medium transition-all duration-200;
+}
+
+.fade-in {
+  animation: fadeIn 500ms ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }

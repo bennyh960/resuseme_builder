@@ -16,7 +16,7 @@ const ProgressNavigation: React.FC<ProgressNavigationProps> = ({ routes }) => {
 
   if (!location) return null;
   return (
-    <div className="w-full mx-auto mb-7">
+    <div className="w-full mx-auto">
       <div className="relative flex items-center justify-between">
         {routes.map((route) => {
           const isActive = location.pathname === route.path;

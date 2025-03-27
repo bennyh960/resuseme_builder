@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type LocalStorageKey = "personalInfo" | "educations" | "experiences" | "summary" | "skills" | "extra" | "meta";
+type LocalStorageKey = "personalInfo" | "educations" | "experiences" | "summary" | "skills" | "additionalSections";
 
 /**
  * Custom hook to manage state synchronized with localStorage.

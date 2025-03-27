@@ -57,7 +57,7 @@ const PersonalInfoForm = () => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full fade-in">
       <Title title={dict.title[language]} description={dict.description[language]} />
 
       <div className="flex flex-col gap-8">
@@ -119,7 +119,7 @@ const PersonalInfoForm = () => {
         </div>
       </div>
       <div
-        className={`flex flex-col gap-8 overflow-hidden transition-all duration-500 ease-in-out ${
+        className={`flex flex-col gap-6 overflow-hidden transition-all duration-500 ease-in-out ${
           isAdditionalVisible ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >

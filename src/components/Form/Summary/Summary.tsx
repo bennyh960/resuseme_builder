@@ -23,7 +23,7 @@ const Summary = () => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full fade-in">
       <Title title={dict.title[language]} description={dict.description[language]} />
       <div className="block font-medium text-gray-900 mb-2">{dict.subTitle[language]}</div>
       <RichTextEditor onChange={handleChange} initialContent={summary} />

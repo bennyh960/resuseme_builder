@@ -1,33 +1,48 @@
 import React from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
-import { demoData } from "../../../data/fake";
 import { labels } from "../../../data/labels";
 
 const PatternA = () => {
-  const { personalInfo, language } = useCustomContext();
+  const { personalInfo, language, skills, additionalSections, educations, experiences, summary } = useCustomContext();
   return (
-    <div className={`resume-container p-6 max-w-4xl mx-auto ${language === "he" ? "text-right" : "text-left"}`}>
+    <div className={`p-6 mx-auto ${language === "he" ? "text-right" : "text-left"}`}>
       <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold">
-          {personalInfo.firstName + " " + personalInfo.lastName || demoData.personalInfo.name[language]}
-        </h1>
-        <p className="text-xl">{demoData.personalInfo.title[language]}</p>
-        <p className="text-sm text-gray-500">{demoData.personalInfo.email[language]}</p>
+        <h1 className="text-4xl font-bold">{personalInfo.firstName + " " + personalInfo.lastName}</h1>
+        <p className="text-xl">{personalInfo.jobTitle}</p>
+        <div className="flex justify-between">
+          <p className="text-sm text-gray-500">
+            {labels.personalInfo.phone[language]}: {personalInfo.phone}
+          </p>
+          <p className="text-sm text-gray-500">
+            {labels.personalInfo.email[language]}: {personalInfo.email}
+          </p>
+          {personalInfo.linkedin && (
+            <p className="text-sm text-gray-500">
+              {labels.personalInfo.linkedin[language]}: {personalInfo.linkedin}
+            </p>
+          )}
+          {personalInfo.website && (
+            <p className="text-sm text-gray-500">
+              {labels.personalInfo.website[language]}: {personalInfo.website}
+            </p>
+          )}
+        </div>
       </header>
 
       {/* Professional Summary */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold">{labels.professionalSummary.professionalSummary[language]}</h2>
-        <p>{demoData.professionalSummary.description[language]}</p>
+        <h2 className="text-2xl font-semibold">{labels.professionalSummary.preview[language]}</h2>
+        <p dangerouslySetInnerHTML={{ __html: summary }} />
       </section>
 
       {/* Skills */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold">{labels.skills.skills[language]}</h2>
+        <h2 className="text-2xl font-semibold">{labels.skills.skillsTitle[language]}</h2>
         <ul>
-          {demoData.skills.skill[language].split(", ").map((skill, index) => (
+          {skills.data.map((skill, index) => (
             <li key={index} className="text-lg">
-              {skill}
+              <span>{skill.name}</span>
+              {skills.showLevel && <span> - {skill.level}</span>}
             </li>
           ))}
         </ul>
@@ -35,21 +50,19 @@ const PatternA = () => {
 
       {/* Work Experience */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold">{labels.workExperience.workExperience[language]}</h2>
-        {Object.keys(demoData.workExperience).map((key, index) => {
-          if (key === "workExperience") return null; // Skip the parent label
-          const experience = demoData.workExperience[key as "experience1"];
+        <h2 className="text-2xl font-semibold">{labels.experience.experienceTitle[language]}</h2>
+        {experiences.map((exp, index) => {
           return (
             <div key={index} className="mb-4">
               <h3 className="text-xl font-bold">
-                {experience.role[language]} - {experience.company[language]}
+                {exp.jobTitle} - {exp.employer}
               </h3>
-              <p className="text-sm text-gray-500">{experience.duration[language]}</p>
-              <ul className="list-disc ml-5">
-                {experience.responsibilities[language].map((resp, i) => (
-                  <li key={i}>{resp}</li>
-                ))}
-              </ul>
+              <p className="text-sm text-gray-500">
+                <span>{exp.startDate}</span>
+                <span>-</span>
+                <span>{exp.endDate}</span>
+              </p>
+              <div className="list-disc ml-5" dangerouslySetInnerHTML={{ __html: exp.workSummary }} />
             </div>
           );
         })}
@@ -57,24 +70,36 @@ const PatternA = () => {
 
       {/* Education */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold">{labels.education.education[language]}</h2>
-        <div>
-          <h3 className="text-xl font-bold">
-            {demoData.education.degree1.degree[language]} - {demoData.education.degree1.institution[language]}
-          </h3>
-          <p className="text-sm text-gray-500">{demoData.education.degree1.year[language]}</p>
-        </div>
+        <h2 className="text-2xl font-semibold">{labels.education.educationTitle[language]}</h2>
+        {educations.map((edu) => {
+          return (
+            <div key={edu.id}>
+              <h3 className="text-xl font-bold">
+                {edu.degree} in {edu.fieldOfStudy} ({edu.schoolName},{edu.schoolLocation})
+              </h3>
+              <p className="text-sm text-gray-500">
+                {edu.startDate} - {edu.endDate}
+              </p>
+              <p className="text-sm" dangerouslySetInnerHTML={{ __html: edu.description }}></p>
+            </div>
+          );
+        })}
       </section>
 
-      {/* Contact */}
+      {/* Languages */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold">{labels.contact.contact[language]}</h2>
-        <p>
-          {labels.contact.email[language]}: {demoData.contact.email[language]}
-        </p>
-        <p>
-          {labels.contact.phone[language]}: {demoData.contact.phone[language]}
-        </p>
+        <div>
+          <h1>{labels.additionalSection.languages.title[language]}</h1>
+          <ul>
+            {additionalSections.languages.map((lang) => {
+              return (
+                <li key={lang.name}>
+                  {lang.name}-{lang.level}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </section>
     </div>
   );

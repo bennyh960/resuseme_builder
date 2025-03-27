@@ -3,7 +3,6 @@ import FormField from "../../../../UI/FormField/FormField";
 import { labels } from "../../../../data/labels";
 import { Language } from "../../../../hooks/useCustomContext";
 import RichTextEditor from "../../../../UI/RichTextEditor/RichTextEditor";
-import CheckBox from "../../../../UI/CheckBox/CheckBox";
 import Checkbox from "../../../../UI/CheckBox/CheckBox";
 
 export type ExperienceType = {
@@ -26,6 +25,8 @@ export const FakeInitExperience: ExperienceType = {
   workSummary: "Master of Indigo league , using Dragonite and Tyrnitar as beasts.",
 };
 
+const currentLbl = { he: "עדיין", en: "Current" };
+
 interface IExperienceSingle {
   language: Language;
   experience: ExperienceType;
@@ -44,7 +45,7 @@ const ExperienceSingle = ({ language, experience, onChange }: IExperienceSingle)
   };
 
   const handleChangeCurrent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.checked === true ? "" : endDateRef.current;
+    const value = e.target.checked === true ? currentLbl[language] : endDateRef.current;
     onChange(value, "endDate" as keyof ExperienceType, experience);
   };
 
@@ -103,7 +104,7 @@ const ExperienceSingle = ({ language, experience, onChange }: IExperienceSingle)
           <Checkbox
             label="Current"
             containerClassName="mt-3"
-            checked={experience.endDate === ""}
+            checked={experience.endDate === currentLbl.en || experience.endDate === currentLbl.he}
             onChange={handleChangeCurrent}
           />
         </span>

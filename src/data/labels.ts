@@ -1,5 +1,6 @@
 // label.ts
 
+import { AdditionalSectionsType } from "../components/Form/additionalSections/AdditionalSections";
 import { EducationType } from "../components/Form/education/educationSingle/EducationSingle";
 import { ExperienceType } from "../components/Form/experience/ExperienceSingle/ExperienceSingle";
 import { PersonalInfoType } from "../components/Form/personalInfo/PersonalInfoForm";
@@ -9,6 +10,8 @@ export type LabelsType = {
   experience: Record<keyof ExperienceType | "experienceTitle" | "current", Record<"he" | "en", string>>;
   education: Record<keyof EducationType | "educationTitle" | "current", Record<"he" | "en", string>>;
   skills: Record<string, Record<"he" | "en", string>>;
+  professionalSummary: Record<string, Record<"he" | "en", string>>;
+  additionalSection: Record<keyof AdditionalSectionsType, Record<"title" | "value", Record<"he" | "en", string>>>;
 };
 
 export const labels: LabelsType = {
@@ -35,10 +38,10 @@ export const labels: LabelsType = {
     workSummary: { he: "תקציר", en: "Work Summary" },
     id: { he: "", en: "" },
   },
-  // professionalSummary: {
-  //   professionalSummary: { he: "סיכום מקצועי", en: "Professional Summary" },
-  //   description: { he: "תיאור", en: "Description" },
-  // },
+  professionalSummary: {
+    form: { he: "סיכום מקצועי", en: "Professional Summary" },
+    preview: { he: "תקציר", en: "Summary" },
+  },
   skills: {
     skillsTitle: { he: "כישורים", en: "Skills" },
     skill: { he: "", en: "Skill" },
@@ -56,5 +59,10 @@ export const labels: LabelsType = {
     endDate: { he: "תאריך סיום", en: "End Date" },
     id: { he: "", en: "" },
     fieldOfStudy: { he: "תחום לימודים", en: "Field of Study" },
+  },
+  additionalSection: {
+    languages: { title: { he: "שפות", en: "Languages" }, value: { he: "עברית", en: "English" } },
+    certifications: { title: { he: "הסמכות", en: "Certifications" }, value: { he: "", en: "" } },
+    custom: { title: { he: "הוספה ידנית", en: "Custom" }, value: { he: "", en: "" } },
   },
 };

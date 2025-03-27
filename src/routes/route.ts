@@ -8,6 +8,7 @@ import Educations from "../components/Form/education/Education";
 import SkillsSection from "../components/Form/skills/Skills";
 import Test from "../components/Test/Test";
 import Summary from "../components/Form/Summary/Summary";
+import AdditionalSections from "../components/Form/additionalSections/AdditionalSections";
 
 export const formRoutes: (RouteObject & { label: string })[] = [
   { Component: PersonalInfoForm, path: "/contact", label: "Contact" },
@@ -15,7 +16,7 @@ export const formRoutes: (RouteObject & { label: string })[] = [
   { Component: Educations, path: "/education", label: "Education" },
   { Component: SkillsSection, path: "/skills", label: "Skills" },
   { Component: Summary, path: "/summary", label: "Summary" },
-  { Component: PersonalInfoForm, path: "/finalize", label: "Finalize" },
+  { Component: AdditionalSections, path: "/finalize", label: "Finalize" },
 ];
 
 const router = (contextValues: SiteContextType) =>
