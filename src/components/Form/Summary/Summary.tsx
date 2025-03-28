@@ -14,19 +14,23 @@ const dict = {
     he: "תקציר מקצועי",
   },
 };
-
+const maxLength = 1500;
 const Summary = () => {
   const { summary, setSummary, language } = useCustomContext();
 
   const handleChange = (value: string) => {
-    setSummary(value);
+    if (value.length < 1000) setSummary(value);
   };
 
   return (
     <div className="w-full h-full fade-in">
       <Title title={dict.title[language]} description={dict.description[language]} />
+
       <div className="block font-medium text-gray-900 mb-2">{dict.subTitle[language]}</div>
-      <RichTextEditor onChange={handleChange} initialContent={summary} />
+      <RichTextEditor maxLength={maxLength} onChange={handleChange} initialContent={summary} />
+      <span>
+        {summary.length}/{maxLength}
+      </span>
     </div>
   );
 };

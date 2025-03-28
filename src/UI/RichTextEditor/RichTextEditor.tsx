@@ -11,6 +11,7 @@ interface RichTextEditorProps {
   onChange?: (html: string) => void;
   placeholder?: string;
   className?: string;
+  maxLength?: number;
 }
 
 const RichTextEditor: React.FC<RichTextEditorProps> = ({
@@ -18,6 +19,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   onChange,
   placeholder = "Start typing...",
   className = "",
+  maxLength,
 }) => {
   const editor = useEditor({
     extensions: [
@@ -36,7 +38,15 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     ],
     content: initialContent,
     onUpdate: ({ editor }) => {
-      onChange && onChange(editor.getHTML());
+      const content = editor.getHTML();
+      const text = editor.getText(); // Get plain text content
+      if (maxLength && text.length > maxLength) {
+        // Trim the content if it exceeds maxLength
+        const truncatedContent = text.slice(0, maxLength);
+        editor.commands.setContent(truncatedContent);
+      } else {
+        onChange && onChange(content);
+      }
     },
     editorProps: {
       attributes: {

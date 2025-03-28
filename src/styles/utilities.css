@@ -1,0 +1,22 @@
+circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: white;
+  border: var(--color-blue-500) 1px solid;
+}
+
+.fade-in {
+  animation: fadeIn 500ms ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}

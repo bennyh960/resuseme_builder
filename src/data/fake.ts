@@ -1,39 +1,77 @@
-// fake.ts
+const optioanlFields = {
+  educations: ["description"],
+  personalInfo: ["city", "country", "linkedin", "website"],
+  additionalSection: {
+    custom: "*",
+    certifications: "*",
+  },
+};
 
-import { labels } from "./labels";
+const educations = [
+  {
+    id: "-demo",
+    schoolName: "Bar Ilandsa",
+    schoolLocation: "Ramat Gan",
+    degree: "B.Sc",
+    fieldOfStudy: "Computer Science",
+    startDate: "2020-03",
+    endDate: "2023-04",
+    description: "Master of Indigo league , using Dragonite and Tyrnitar as beasts.",
+  },
+  {
+    id: "1743023098560",
+    schoolName: "Bar Ilan",
+    schoolLocation: "",
+    fieldOfStudy: "Computer Science",
+    startDate: "",
+    endDate: "",
+    degree: "",
+    description: "",
+  },
+];
 
-// Example data to fill the fields in a resume
-export const personalInfo = {
-  personalInfo: {
-    en: labels.personalInfo.personalInfo.en,
-    he: labels.personalInfo.personalInfo.he,
+const experiences = [
+  {
+    id: "-demo",
+    jobTitle: "Pokemon Master2",
+    employer: "Indigo",
+    location: "Viridian City",
+    startDate: "2023-03",
+    endDate: "2025-05",
+    workSummary: "<p>Master of <strong>Indigo</strong> league , using Dragonite and Tyrnitar as beasts.</p>",
   },
-  firstName: {
-    en: "John",
-    he: "יוהן דו",
-  },
-  lastName: {
-    en: "Doe",
-    he: "יוהן דו",
-  },
-  email: {
-    en: "johndoe@email.com",
-    he: "יוהנדוי@email.com",
-  },
-  phone: {
-    en: "(555) 123-4567",
-    he: "(555) 123-4567",
-  },
-  city: {
-    en: "City, Country",
-    he: "עיר, מדינה",
-  },
-  country: {
-    en: "City, Country",
-    he: "עיר, מדינה",
-  },
-  title: {
-    en: "Web Developer",
-    he: "מפתח אינטרנט",
-  },
+];
+
+const personalInfo = {
+  firstName: "Benny",
+  lastName: "Hassan",
+  jobTitle: "Full Stack Developer",
+  phone: "0524874600",
+  email: "bennyh960@gmail.com",
+  city: "",
+  country: "",
+  linkedin: "",
+  website: "www.abc.com",
+};
+
+const skills = {
+  data: [
+    { level: 3, name: "Full-Stack Development" },
+    { level: 3, name: "Software Development in Node.js" },
+    { level: 3, name: "Working with PostgreSQL Databases" },
+    { level: 3, name: "Front-End Technologies (React, JavaScript)" },
+  ],
+  showLevel: true,
+};
+
+const summary =
+  "Tool owner of production machines, responsible for tool performance, data, writing work plans, troubleshooting, validation, quality performance and project management.";
+
+const additionalSection = {
+  languages: [
+    { name: "Hebrew", level: 3 },
+    { name: "english", level: 2 },
+  ],
+  custom: [{ something: "the value of it" }], // optional
+  certifications: "some ceritifaction",
 };

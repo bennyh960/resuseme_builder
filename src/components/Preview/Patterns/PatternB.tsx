@@ -1,104 +1,138 @@
 import React from "react";
+import { skillLevelMap } from "../../Form/skills/SkillSingle/SkillSingle";
 import useCustomContext from "../../../hooks/useCustomContext";
+import { labels } from "../../../data/labels";
+
+const languageLvlMap = { ...skillLevelMap };
 
 const PatternB = () => {
-  const { personalInfo } = useCustomContext();
+  const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-      {/* <!-- Header --> */}
-      <div className="flex items-center mb-6">
-        <div className="w-1/3">
-          <h1 className="text-4xl font-bold text-gray-900">
-            {personalInfo.firstName} {personalInfo.lastName}
-          </h1>
-          <p className="text-xl text-gray-600">{personalInfo.jobTitle}</p>
-        </div>
-        <div className="w-2/3 text-right">
-          <p className="text-sm text-gray-500">Phone: {personalInfo.phone}</p>
-          <p className="text-sm text-gray-500">Email: {personalInfo.email}</p>
-          {(personalInfo.city || personalInfo.country) && (
-            <p className="text-sm text-gray-500">
-              Location: {personalInfo.city}
-              {personalInfo.city && personalInfo.country ? "," : ""} {personalInfo.country}{" "}
-            </p>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg">
+      {/* Header */}
+      <header className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">
+          {personalInfo.firstName} {personalInfo.lastName}
+        </h1>
+        <p className="text-xl text-gray-600">{personalInfo.jobTitle}</p>
+
+        <div className="flex justify-center space-x-4 mt-4 text-gray-700">
+          {personalInfo.email && <span>{personalInfo.email}</span>}
+          {personalInfo.phone && <span>{personalInfo.phone}</span>}
+          {personalInfo.city && personalInfo.country && (
+            <span>
+              {personalInfo.city}, {personalInfo.country}
+            </span>
           )}
         </div>
-      </div>
+      </header>
 
-      {/* <!-- Professional Summary --> */}
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Professional Summary</h2>
-        <p className="text-gray-700">
-          Highly skilled web developer with over 5 years of experience in creating dynamic websites and web
-          applications. Passionate about writing clean, maintainable code and delivering great user experiences. Adept
-          at working with modern JavaScript frameworks and committed to continuously learning and improving.
-        </p>
-      </section>
+      {/* Summary */}
+      {summary && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <User className="mr-2" />  */}
+            Professional Summary
+          </h2>
+          <div dangerouslySetInnerHTML={{ __html: summary }} />
+        </section>
+      )}
 
-      {/* <!-- Skills --> */}
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Skills</h2>
-        <div className="flex flex-wrap gap-4">
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">HTML</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">CSS</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">JavaScript</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">React</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">Node.js</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">TypeScript</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">Git</span>
-          <span className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">Tailwind CSS</span>
-        </div>
-      </section>
+      {/* Education */}
+      {educations && educations.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <GraduationCap className="mr-2" />  */}
+            Education
+          </h2>
+          {educations.map((edu) => (
+            <div key={edu.id} className="mb-4">
+              <div className="flex justify-between">
+                <h3 className="font-bold">{edu.schoolName}</h3>
+                <p className="text-gray-600">
+                  {edu.startDate} - {edu.endDate || "Present"}
+                </p>
+              </div>
+              <p className="text-gray-700">
+                {edu.degree} in {edu.fieldOfStudy}
+              </p>
+              {edu.description && <p className="text-gray-600 mt-2">{edu.description}</p>}
+            </div>
+          ))}
+        </section>
+      )}
 
-      {/* <!-- Work Experience --> */}
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Work Experience</h2>
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-bold text-gray-900">Senior Web Developer</h3>
-            <p className="text-gray-600">Company Name | 2021 - Present</p>
-            <ul className="list-disc list-inside text-gray-700">
-              <li>Developed and maintained web applications using React, Node.js, and MongoDB.</li>
-              <li>Collaborated with cross-functional teams to ensure project timelines were met.</li>
-              <li>Improved website performance by optimizing front-end code and implementing best practices.</li>
-            </ul>
+      {/* Professional Experience */}
+      {experiences && experiences.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <Briefcase className="mr-2" />  */}
+            Professional Experience
+          </h2>
+          {experiences.map((exp) => (
+            <div key={exp.id} className="mb-4">
+              <div className="flex justify-between">
+                <h3 className="font-bold">
+                  {exp.jobTitle} at {exp.employer}
+                </h3>
+                <p className="text-gray-600">
+                  {exp.startDate} - {exp.endDate || "Present"}
+                </p>
+              </div>
+              <p className="text-gray-700">{exp.location}</p>
+              {exp.workSummary && <p className="text-gray-600 mt-2">{exp.workSummary}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Skills */}
+      {skills && skills.data.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <Code className="mr-2" />  */}
+            Skills
+          </h2>
+          <div className="grid grid-cols-2 gap-4">
+            {skills.data.map((skill, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span>{skill.name}</span>
+                {/* <SkillLevel level={skill.level} showLevel={skills.showLevel} /> */}
+              </div>
+            ))}
           </div>
-          <div>
-            <h3 className="font-bold text-gray-900">Frontend Developer</h3>
-            <p className="text-gray-600">Company Name | 2018 - 2021</p>
-            <ul className="list-disc list-inside text-gray-700">
-              <li>Designed and developed responsive websites using HTML, CSS, and JavaScript.</li>
-              <li>Created reusable components and streamlined UI development process using React.js.</li>
-              <li>Collaborated with the design team to implement modern UI/UX principles into websites.</li>
-            </ul>
+        </section>
+      )}
+
+      {/* Languages */}
+      {
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <Globe className="mr-2" />  */}
+            Languages
+          </h2>
+          <div className="grid grid-cols-2 gap-4">
+            {additionalSections.languages.map((lang, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span>{lang.name}</span>
+                {/* <SkillLevel level={lang.lvl} showLevel={true} /> */}
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      }
 
-      {/* <!-- Education --> */}
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Education</h2>
-        <div>
-          <h3 className="font-bold text-gray-900">Bachelor of Science in Computer Science</h3>
-          <p className="text-gray-600">University Name | 2014 - 2018</p>
-        </div>
-      </section>
-
-      {/* <!-- Contact Info --> */}
-      <section className="mt-6 text-center">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">Contact Me</h2>
-        <p className="text-gray-600">
-          Feel free to reach out via email or phone for job opportunities or collaborations.
-        </p>
-        <div className="flex justify-center gap-6 mt-4">
-          <a href="mailto:johndoe@email.com" className="text-blue-500 hover:text-blue-700">
-            Email
-          </a>
-          <a href="tel:+15551234567" className="text-blue-500 hover:text-blue-700">
-            Phone
-          </a>
-        </div>
-      </section>
+      {/* Certifications */}
+      {additionalSections?.certifications && (
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
+            {/* <Award className="mr-2" />  */}
+            Certifications
+          </h2>
+          <div dangerouslySetInnerHTML={{ __html: additionalSections.certifications }} />
+        </section>
+      )}
     </div>
   );
 };

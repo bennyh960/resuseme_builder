@@ -111,7 +111,8 @@ const ExperienceSingle = ({ language, experience, onChange }: IExperienceSingle)
       </div>
 
       <div className="basis-2 w-full flex-grow">
-        <div className="block font-medium text-gray-900 mb-2">{labels.experience.workSummary[language]}</div>
+        <span className="block font-medium text-gray-900 mb-2">{labels.experience.workSummary[language]}</span>
+
         <RichTextEditor onChange={(html) => handleChange(html)} initialContent={experience.workSummary} />
       </div>
     </div>

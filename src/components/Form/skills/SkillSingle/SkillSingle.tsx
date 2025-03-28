@@ -2,8 +2,16 @@ import TrashIcon from "../../../../assets/TrashIcon";
 import { SkillType } from "../Skills";
 import SliderControl from "../../../../UI/SlideControl/SlideControl";
 import FormField from "../../../../UI/FormField/FormField";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { Language } from "../../../../hooks/useCustomContext";
+
+export const skillLevelMap = {
+  1: { he: "טירון", en: "Novice" },
+  2: { he: "מתחיל", en: "Beginner" },
+  3: { he: "מיומן", en: "Skilful" },
+  4: { he: "מנוסה", en: "Experienced" },
+  5: { he: "מומחה", en: "Expert" },
+};
 
 const SkillSingle = ({
   skill,
@@ -39,16 +47,6 @@ const SkillSingle = ({
     };
   }, [localSkillName, index]);
 
-  const levelMap = useMemo(() => {
-    return {
-      1: { he: "טירון", en: "Novice" },
-      2: { he: "מתחיל", en: "Beginner" },
-      3: { he: "מיומן", en: "Skilful" },
-      4: { he: "מנוסה", en: "Experienced" },
-      5: { he: "מומחה", en: "Expert" },
-    };
-  }, []);
-
   return (
     <div className="flex flex-col my-2">
       <div className="flex w-full gap-5 justify-between items-center">
@@ -67,7 +65,7 @@ const SkillSingle = ({
           <div className="w-full flex ">
             <span>Level</span>
             <span>-</span>
-            <span className="app-btn">{levelMap[skill.level as keyof typeof levelMap][language]}</span>
+            <span className="app-btn">{skillLevelMap[skill.level as keyof typeof skillLevelMap][language]}</span>
           </div>
           <SliderControl
             value={skill.level}

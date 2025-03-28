@@ -8,7 +8,7 @@ import LanguagesIcon from "../../../assets/LanguagesIcon";
 import MedalIcon from "../../../assets/MedalIcon";
 
 export type AdditionalSectionsType = {
-  languages: { name: string; level: string }[];
+  languages: { name: string; level: number }[];
   custom: Record<string, string>[];
   certifications: string;
 };

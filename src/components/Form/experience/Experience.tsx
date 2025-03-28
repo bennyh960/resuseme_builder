@@ -104,7 +104,7 @@ const Experience = () => {
   });
 
   return (
-    <div className="w-full h-full fade-in border">
+    <div className="w-full h-full fade-in">
       <Title title={dict.title[language]} description={dict.description[language]} />
 
       <div className="w-full max-h-[80%] overflow-auto">
