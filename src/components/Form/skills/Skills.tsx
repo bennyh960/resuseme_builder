@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import PlusIcon from "../../../assets/plusIcon";
-import SkillSingle from "./SkillSingle/SkillSingle";
 import Title from "../../Shared/Title";
 import ToggleButton from "../../../UI/ToggleBtn/ToggleBtn";
+import SliderControlMap from "../../Shared/SliderControlMap";
 
 export interface SkillType {
   name: string;
@@ -16,12 +16,12 @@ export type SkillsObject = {
 };
 
 const dict = {
-  title: { he: "השכלה", en: "Education" },
+  title: { he: "כישורים נוספים", en: "Skills" },
   showExpLvl: { en: "Show experience level", he: "הראה רמה" },
   hideExpLvl: { en: "Hide experience level", he: "הסתר רמה" },
   description: {
-    he: "הוסיפו את ההשכלה שלכם עד כה , אפילו אם לא סיימתם.",
-    en: "Enter your education experience so far, even if you have not graduated.",
+    he: "מומלץ לשתף כישורים שידגישו חוזקות שלכם",
+    en: "Highlight your most important and applicable professional skills.",
   },
 };
 
@@ -95,14 +95,15 @@ const SkillsSection: React.FC = () => {
 
       <div className="w-full max-h-[65%] overflow-auto">
         {skills.data?.map((skill, index) => (
-          <SkillSingle
+          <SliderControlMap
             onDelete={handleDelete}
             onNameChange={handleSkillNameChange}
             onLevelChange={handleSkillLevelChange}
             key={skill.name}
             index={index}
-            skill={skill}
+            value={skill}
             language={language}
+            type="skills"
           />
         ))}
       </div>

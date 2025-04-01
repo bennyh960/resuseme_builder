@@ -4,24 +4,26 @@ import jsPDF from "jspdf";
 
 // import PatternB from "./Patterns/PatternB";
 
-import PatternA from "./Patterns/PatternA";
+import { patenPrompt } from "../../data/fake";
+import { PatternA, PatternB, PatternC, PatternD, PatternE, PatternF, PatternG, PatternH } from "./Patterns";
+import Button from "../../UI/Button/Button";
 
-import PatternB from "./Patterns/PatternB";
-import PatternC from "./Patterns/PatternC";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import PatternD from "./Patterns/PatternD";
-import useCustomContext from "../../hooks/useCustomContext";
+const Patterns = [PatternA, PatternB, PatternC, PatternD, PatternE, PatternF, PatternG, PatternH];
 
-const patterns = [<PatternA />, <PatternB />, <PatternC />, <PatternD />];
+type scaleOptions = "auto" | "original";
+
+console.log(patenPrompt);
+type ScaleType = { x: scaleOptions; y: scaleOptions };
 const Preview = () => {
   const elementRef = useRef<HTMLDivElement>(null);
+  const [scalePdf] = useState<ScaleType>({ x: "original", y: "original" });
 
   const handleDownloadPDF = async () => {
     if (!elementRef.current) return;
 
     // Create canvas from the element
     const canvas = await html2canvas(elementRef.current, {
-      scale: 2, // Higher scale for better quality
+      scale: 4, // Higher scale for better quality
       useCORS: true,
       logging: false,
     });
@@ -39,12 +41,20 @@ const Preview = () => {
     const elementWidthInMm = elementWidth / pxToMm;
     const elementHeightInMm = elementHeight / pxToMm;
 
-    console.log({ elementWidth, elementHeight, elementWidthInMm, elementHeightInMm });
+    const customFormat = [a4WidthInMm, a4HeightInMm];
+
+    if (scalePdf.x === "original") {
+      customFormat[0] = elementWidthInMm;
+    }
+
+    if (scalePdf.y === "original") {
+      customFormat[1] = elementHeightInMm;
+    }
 
     const pdf = new jsPDF({
       orientation: elementWidthInMm > elementHeightInMm ? "landscape" : "portrait",
       unit: "mm",
-      format: "a4",
+      format: customFormat,
     });
 
     // Calculate scaling to fit content to A4
@@ -62,16 +72,47 @@ const Preview = () => {
     const x = (availableWidth - scaledWidth) / 2;
     const y = (availableHeight - scaledHeight) / 2;
 
-    pdf.addImage(canvas.toDataURL("image/png"), "PNG", x, y, scaledWidth, scaledHeight);
+    console.log({
+      elementWidth,
+      elementHeight,
+      elementWidthInMm,
+      elementHeightInMm,
+      availableWidth,
+      availableHeight,
+      scale,
+      scaleX,
+      scaleY,
+      scaledWidth,
+      scaledHeight,
+      x,
+      y,
+    });
+
+    const selectedScaledWidth = scalePdf.x === "auto" ? scaledWidth : elementWidthInMm;
+    const selectedScaledHight = scalePdf.y === "auto" ? scaledHeight : elementHeightInMm;
+
+    const selectedX = scalePdf.x === "auto" ? x : 0;
+    const selectedY = scalePdf.y === "auto" ? x : 0;
+
+    pdf.addImage(
+      canvas.toDataURL("image/png", 1.0),
+      "PNG",
+      selectedX,
+      selectedY,
+      selectedScaledWidth,
+      selectedScaledHight
+    );
 
     // Download the PDF
     pdf.save(`resume.pdf`);
   };
 
+  const Component = Patterns[7];
+
   return (
-    <div className="flex justify-center items-start p-6 max-h-[330mm] w-full">
-      <div ref={elementRef} className="m-auto p-6 resume-container border">
-        {patterns[0]}
+    <div className="flex justify-center items-start px-6 py-7 max-h-[330mm] w-full">
+      <div ref={elementRef} className="m-auto py-10 px-12 resume-container shadow">
+        {<Component />}
 
         {/* <PatternB /> */}
 
@@ -79,9 +120,9 @@ const Preview = () => {
 
         {/* <PatternD /> */}
       </div>
-      <button className="fixed z-10 top-5 right-5 bg-red border" onClick={handleDownloadPDF}>
+      <Button cssClass="fixed z-10 top-4 right-5" onClick={handleDownloadPDF}>
         Download PDF
-      </button>
+      </Button>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
-import { skillLevelMap } from "../../Form/skills/SkillSingle/SkillSingle";
+import { skillLevelMap } from "../../Shared/SliderControlMap";
 
 const PatternD = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();

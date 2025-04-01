@@ -1,12 +1,12 @@
 import React from "react";
-import { skillLevelMap } from "../../Form/skills/SkillSingle/SkillSingle";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
+import { LangLevelMap, skillLevelMap } from "../../Shared/SliderControlMap";
 
 const PatternD: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
   const getSkillLevelText = (level: number) => skillLevelMap[level][language];
-  const getLanguageLevelText = (level: number) => skillLevelMap[level][language];
+  const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 text-gray-800">

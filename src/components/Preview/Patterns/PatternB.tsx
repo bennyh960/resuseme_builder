@@ -1,9 +1,6 @@
 import React from "react";
-import { skillLevelMap } from "../../Form/skills/SkillSingle/SkillSingle";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
-
-const languageLvlMap = { ...skillLevelMap };
 
 const PatternB = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();

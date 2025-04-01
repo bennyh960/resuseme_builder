@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import { skillLevelMap } from "../../Form/skills/SkillSingle/SkillSingle";
+import React from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
+import { skillLevelMap, LangLevelMap } from "../../Shared/SliderControlMap";
 
 // Helper function to map skill level and language level
-const languageLvlMap = { ...skillLevelMap };
 
 const PatternA: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
   const getSkillLevelText = (level: number) => skillLevelMap[level][language];
-  const getLanguageLevelText = (level: number) => languageLvlMap[level][language];
+  const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
     <div className="mx-auto bg-white text-gray-800">
@@ -21,7 +20,7 @@ const PatternA: React.FC = () => {
           </h1>
           <h2 className="text-xl text-gray-500">{personalInfo.jobTitle}</h2>
         </div>
-        <div className="contact-info space-y-2 flex gap-5 justify-between">
+        <div className="contact-info space-y-2 flex gap-5 justify-between flex-wrap w-full">
           {personalInfo.email && (
             <div>
               <strong>{labels.personalInfo.email[language]}:</strong> {personalInfo.email}
@@ -42,14 +41,16 @@ const PatternA: React.FC = () => {
               <strong>{labels.personalInfo.country[language]}:</strong> {personalInfo.country}
             </div>
           )}
-          {personalInfo.linkedin && (
+          {personalInfo.linkedin.text && (
             <div>
-              <strong>{labels.personalInfo.linkedin[language]}:</strong> {personalInfo.linkedin}
+              <strong>{labels.personalInfo.linkedin[language]}:</strong>{" "}
+              <a href={personalInfo.linkedin.url}>{personalInfo.linkedin.text}</a>
             </div>
           )}
-          {personalInfo.website && (
+          {personalInfo.website.text && (
             <div>
-              <strong>{labels.personalInfo.website[language]}:</strong> {personalInfo.website}
+              <strong>{labels.personalInfo.website[language]}:</strong>{" "}
+              <a href={personalInfo.website.url}>{personalInfo.website.text}</a>
             </div>
           )}
         </div>

@@ -39,7 +39,7 @@ const EducationSingle = ({ language, education, onChange }: IEducationSingle) =>
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | string) => {
     if (typeof e === "string") {
-      onChange(e, "workSummary" as keyof EducationType, education);
+      onChange(e, "description" as keyof EducationType, education);
     } else {
       onChange(e.target.value, e.target.id as keyof EducationType, education);
     }

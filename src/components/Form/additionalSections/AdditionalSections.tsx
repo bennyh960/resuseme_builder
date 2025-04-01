@@ -6,6 +6,7 @@ import checkIcon from "../../../assets/circle-check.svg";
 import ListIcon from "../../../assets/ListIcon";
 import LanguagesIcon from "../../../assets/LanguagesIcon";
 import MedalIcon from "../../../assets/MedalIcon";
+import AdditionalLangSection from "./Languages/AdditionalLanguages";
 
 export type AdditionalSectionsType = {
   languages: { name: string; level: number }[];
@@ -28,12 +29,12 @@ export const initAdditionalSections: AdditionalSectionsType = {
 };
 
 const AdditionalSections = () => {
-  const { language, additionalSections } = useCustomContext();
+  const { language } = useCustomContext();
 
   const accordionItems = [
     {
       id: "languages",
-      content: "",
+      content: <AdditionalLangSection />,
       title: (
         <AdditionalTitleCard
           title="Languages"

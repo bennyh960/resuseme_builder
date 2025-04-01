@@ -29,7 +29,7 @@ const Summary = () => {
       <div className="block font-medium text-gray-900 mb-2">{dict.subTitle[language]}</div>
       <RichTextEditor maxLength={maxLength} onChange={handleChange} initialContent={summary} />
       <span>
-        {summary.length}/{maxLength}
+        {summary?.length}/{maxLength}
       </span>
     </div>
   );

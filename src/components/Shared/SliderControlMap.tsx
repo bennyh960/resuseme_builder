@@ -1,9 +1,16 @@
-import TrashIcon from "../../../../assets/TrashIcon";
-import { SkillType } from "../Skills";
-import SliderControl from "../../../../UI/SlideControl/SlideControl";
-import FormField from "../../../../UI/FormField/FormField";
-import { memo, useCallback, useEffect, useState } from "react";
-import { Language } from "../../../../hooks/useCustomContext";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Language } from "../../hooks/useCustomContext";
+import TrashIcon from "../../assets/TrashIcon";
+import FormField from "../../UI/FormField/FormField";
+import SliderControl from "../../UI/SlideControl/SlideControl";
+
+export const LangLevelMap = {
+  1: { he: "לא רלוונטי", en: "Not applicable" },
+  2: { he: "מתחיל", en: "Novice" },
+  3: { he: "מקצועי", en: "Proficient" },
+  4: { he: "מצוין", en: "Highly proficient" },
+  5: { he: "שפת אם", en: "Native" },
+};
 
 export const skillLevelMap = {
   1: { he: "טירון", en: "Novice" },
@@ -13,62 +20,71 @@ export const skillLevelMap = {
   5: { he: "מומחה", en: "Expert" },
 };
 
-const SkillSingle = ({
-  skill,
+type elementType = { level: number; name: string };
+
+function SliderControlMap({
+  value,
   onDelete,
   onNameChange,
   onLevelChange,
   index,
   language,
+  type,
 }: {
   language: Language;
-  skill: SkillType;
-  onDelete: (skill: SkillType) => void;
+  value: elementType;
+  onDelete: (element: elementType) => void;
   onNameChange: (idx: number, value: string) => void;
   onLevelChange: (idx: number, value: number) => void;
   index: number;
-}) => {
-  const [localSkillName, setLocalSkillName] = useState(skill.name);
+  type: "language" | "skills";
+}) {
+  const [localValueName, setLocalValueName] = useState(value.name);
 
   const handleNameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLocalSkillName(e.target.value);
+      setLocalValueName(e.target.value);
     },
-    [setLocalSkillName]
+    [setLocalValueName]
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      onNameChange(index, localSkillName);
-    }, 500);
+      onNameChange(index, localValueName);
+    }, 1500);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [localSkillName, index]);
+  }, [localValueName, index]);
+
+  const mapper = useMemo(() => {
+    if (type === "language") return LangLevelMap;
+    else return skillLevelMap;
+  }, [type]);
 
   return (
     <div className="flex flex-col my-2">
       <div className="flex w-full gap-5 justify-between items-center">
         <div className="flex gap-3 basis-[calc(80%-14px)] mt-10">
           <button
-            onClick={() => onDelete(skill)}
+            onClick={() => onDelete(value)}
             className="mr-3 flex items-center gap-2 text-blue-400 cursor-pointer hover:text-blue-800 font-medium transition-all duration-200"
           >
             <TrashIcon />
           </button>
           <div className="w-full">
-            <FormField showIcon={false} label={""} id={skill.name} value={localSkillName} onChange={handleNameChange} />
+            <FormField showIcon={false} label={""} id={value.name} value={localValueName} onChange={handleNameChange} />
           </div>
         </div>
         <div className="flex flex-col gap-3">
           <div className="w-full flex ">
             <span>Level</span>
             <span>-</span>
-            <span className="app-btn">{skillLevelMap[skill.level as keyof typeof skillLevelMap][language]}</span>
+            <span className="app-btn">{mapper[value.level as keyof typeof mapper][language]}</span>
           </div>
           <SliderControl
-            value={skill.level}
+            value={value.level}
             onChange={(position) => {
               onLevelChange(index, position);
             }}
@@ -77,6 +93,6 @@ const SkillSingle = ({
       </div>
     </div>
   );
-};
+}
 
-export default memo(SkillSingle);
+export default memo(SliderControlMap);

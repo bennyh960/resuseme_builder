@@ -14,11 +14,11 @@ export type PersonalInfoType = {
   email: string;
   city: string;
   country: string;
-  linkedin: string;
-  website: string;
+  linkedin: { url: string; text: string };
+  website: { url: string; text: string };
 };
 
-export const personalInfoInit = {
+export const personalInfoInit: PersonalInfoType = {
   firstName: "",
   lastName: "",
   jobTitle: "",
@@ -26,8 +26,8 @@ export const personalInfoInit = {
   email: "",
   city: "",
   country: "",
-  linkedin: "",
-  website: "",
+  linkedin: { text: "Linkedin", url: "" },
+  website: { text: "Personal Website", url: "" },
 };
 
 const dict = {
@@ -45,6 +45,14 @@ const PersonalInfoForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPersonalInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const handleChangeURLs = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: "website" | "linkedin",
+    key: "text" | "url"
+  ) => {
+    setPersonalInfo((prev) => ({ ...prev, [id]: { ...prev[id], [key]: e.target.value } }));
   };
 
   const toggleAdditional = () => {
@@ -133,23 +141,45 @@ const PersonalInfoForm = () => {
             label="Country"
           />
         </div>
-
-        <FormField
-          placeholder="linkedin"
-          id="linkedin"
-          value={personalInfo.linkedin}
-          onChange={handleChange}
-          label="Linkedin"
-          isValid={isValidUrl(personalInfo.linkedin) && personalInfo.linkedin.includes("linkedin")}
-        />
-        <FormField
-          placeholder="URL"
-          id="website"
-          value={personalInfo.website}
-          onChange={handleChange}
-          label="Personal Website"
-          isValid={isValidUrl(personalInfo.website)}
-        />
+        <div className="flex gap-12 justify-between items-center">
+          <FormField
+            placeholder="linkedin"
+            id="linkedinUrl"
+            value={personalInfo.linkedin.url}
+            label="Linkedin URL"
+            onChange={(e) => handleChangeURLs(e, "linkedin", "url")}
+            isValid={isValidUrl(personalInfo.linkedin.url) && personalInfo.linkedin.url.includes("linkedin")}
+          />
+          <FormField
+            // disabled={!personalInfo.linkedin.url.includes("linkedin")}
+            placeholder="linkedinText"
+            id="linkedinText"
+            value={personalInfo.linkedin.text}
+            onChange={(e) => handleChangeURLs(e, "linkedin", "text")}
+            label="Linkedin Text"
+          />
+        </div>
+        <div className="flex gap-12 justify-between items-center">
+          <FormField
+            placeholder="URL"
+            id="websiteURL"
+            value={personalInfo.website.url}
+            onChange={(e) => handleChangeURLs(e, "website", "url")}
+            // onChange={handleChange}
+            label="Personal Website URL"
+            isValid={isValidUrl(personalInfo.website.url)}
+          />
+          <FormField
+            disabled={personalInfo.website.url === ""}
+            placeholder="Personal Website Name"
+            id="websiteText"
+            value={personalInfo.website.url}
+            onChange={(e) => handleChangeURLs(e, "website", "text")}
+            // onChange={handleChange}
+            label="Personal Website Name"
+            isValid={isValidUrl(personalInfo.website.text)}
+          />
+        </div>
       </div>
     </div>
   );
