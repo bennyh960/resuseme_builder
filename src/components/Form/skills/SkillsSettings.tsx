@@ -41,7 +41,7 @@ const SkillsSettings = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
       isOpen={isOpen}
       onClose={onClose}
       draggable
-      buttons={[{ children: "Restore", variant: "outline", onClick: handleReset }]}
+      buttons={[{ children: "Restore", variant: "light", onClick: handleReset }]}
       title={
         <div className="flex gap-3 items-center">
           <span>

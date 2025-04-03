@@ -55,7 +55,6 @@ const PatternA: React.FC = () => {
           )}
         </div>
       </section>
-
       {/* Professional Summary Section */}
       {summary && (
         <section className="professional-summary mb-10">
@@ -63,7 +62,6 @@ const PatternA: React.FC = () => {
           <p dangerouslySetInnerHTML={{ __html: summary }} />
         </section>
       )}
-
       {/* Experience Section */}
       {experiences.length > 0 && (
         <section className="experience mb-10">
@@ -85,7 +83,6 @@ const PatternA: React.FC = () => {
           ))}
         </section>
       )}
-
       {/* Education Section */}
       {educations.length > 0 && (
         <section className="education mb-10">
@@ -113,7 +110,6 @@ const PatternA: React.FC = () => {
           ))}
         </section>
       )}
-
       {/* Skills Section */}
       {skills.data.length > 0 && (
         <section className="skills mb-10">
@@ -128,7 +124,6 @@ const PatternA: React.FC = () => {
           </ul>
         </section>
       )}
-
       {/* Languages Section */}
       {additionalSections.languages.length > 0 && (
         <section className="languages mb-10">
@@ -143,7 +138,6 @@ const PatternA: React.FC = () => {
           </ul>
         </section>
       )}
-
       {/* Certifications & Custom Section */}
       <section className="additional-sections">
         {additionalSections.certifications && (
