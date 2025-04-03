@@ -6,14 +6,21 @@ interface IDrawPatternsDrawer {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (index: number) => void;
+  selectedPatternIndex: number;
 }
 
-const DrawPatternsDrawer = ({ Patterns, isOpen, onClose, onSelect }: IDrawPatternsDrawer) => {
+const DrawPatternsDrawer = ({ Patterns, isOpen, onClose, onSelect, selectedPatternIndex }: IDrawPatternsDrawer) => {
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} title={<h1>Patterns</h1>}>
-      <div className="flex flex-col gap-4 p-4">
+    <Drawer position="bottom" isOpen={isOpen} onClose={onClose} title={<h1>Patterns</h1>}>
+      <div className="flex gap-4 p-4">
         {Patterns.map((Pattern, index) => (
-          <div key={index} className="w-65 h-145 flex" onClick={() => onSelect(index)}>
+          <div
+            key={index}
+            className={`cursor-pointer w-65 h-92 flex outline-3 outline-offset-2 outline-double ${
+              selectedPatternIndex === index ? "outline-blue-400" : "outline-transparent"
+            } hover:outline-green-200 transition-all`}
+            onClick={() => onSelect(index)}
+          >
             <div className="resume-container-small border" style={{ transformOrigin: "top left" }}>
               {<Pattern />}
             </div>

@@ -12,37 +12,55 @@ const Drawer = ({ isOpen, onClose, title, children, position = "left" }: IDrawer
   const renderPosition = useMemo(() => {
     switch (position) {
       case "left":
-        return `top-0 left-0 h-screen overflow-y-auto w-80 ${isOpen ? "translate-x-0" : "-translate-x-full"}`;
-
+        return `top-0 left-0 h-screen w-80 ${isOpen ? "translate-x-0" : "-translate-x-full"}`;
+      case "right":
+        return `top-0 right-0 h-screen w-80 ${isOpen ? "translate-x-0" : "translate-x-full"}`;
+      case "bottom":
+        return `bottom-0 left-0 w-full max-h-[550px] ${isOpen ? "translate-y-0" : "translate-y-full"}`;
+      case "top":
+        return `top-0 left-0 w-full max-h-[550px] ${isOpen ? "translate-y-0" : "-translate-y-full"}`;
       default:
-        break;
+        return "";
     }
   }, [position, isOpen]);
 
+  const overlayClasses = useMemo(() => {
+    return `fixed inset-0 bg-[rgba(0,0,0,0.6)] transition-opacity ${
+      isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+    }`;
+  }, [isOpen]);
+
   return (
-    <div
-      className={`border z-50 fixed p-4 bg-white dark:bg-gray-800 transition-transform ease-in ${renderPosition}`}
-      aria-labelledby="drawer-label"
-    >
-      <div className="flex w-full sticky top-0 justify-between bg-inherit">
-        <h5
-          id="drawer-label"
-          className="inline-flex flex-basis items-center sticky top-0 mt-2 mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"
-        >
-          {title}
-        </h5>
+    <>
+      {/* Overlay */}
+      <div
+        className={overlayClasses}
+        onClick={onClose} // Close the drawer when overlay is clicked
+      />
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8  flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          ✕
-        </button>
+      {/* Drawer Content */}
+      <div
+        className={`border z-50 fixed p-0 bg-gray-100 dark:bg-gray-800 shadow-2xl transition-transform ease-in flex flex-col ${renderPosition}`}
+        aria-labelledby="drawer-label"
+      >
+        {/* Header - Fixed, Does Not Scroll */}
+        <div className="h-16 px-4 flex items-center justify-between bg-gray-100 mb-1 dark:bg-gray-800 shadow-md">
+          <h5 id="drawer-label" className="text-base font-semibold text-gray-500 dark:text-gray-400">
+            {title}
+          </h5>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Content - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-4">{children}</div>
       </div>
-
-      {children}
-    </div>
+    </>
   );
 };
 

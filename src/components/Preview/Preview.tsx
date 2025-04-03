@@ -50,6 +50,7 @@ const Preview = () => {
         onClose={() => setIsOpenDrawer(false)}
         Patterns={PatternsArray}
         onSelect={handleSelectedNewPattern}
+        selectedPatternIndex={selectedPatternIndex}
       />
     </div>
   );
