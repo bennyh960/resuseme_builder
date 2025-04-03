@@ -173,7 +173,7 @@ const PersonalInfoForm = () => {
             disabled={personalInfo.website.url === ""}
             placeholder="Personal Website Name"
             id="websiteText"
-            value={personalInfo.website.url}
+            value={personalInfo.website.text}
             onChange={(e) => handleChangeURLs(e, "website", "text")}
             // onChange={handleChange}
             label="Personal Website Name"

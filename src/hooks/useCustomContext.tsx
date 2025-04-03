@@ -3,7 +3,7 @@ import useLocalStorage from "./useLocalStorage";
 import { personalInfoInit, PersonalInfoType } from "../components/Form/personalInfo/PersonalInfoForm";
 import { ExperienceType, FakeInitExperience } from "../components/Form/experience/ExperienceSingle/ExperienceSingle";
 import { EducationType, FakeInitEducation } from "../components/Form/education/educationSingle/EducationSingle";
-import { SkillsObject } from "../components/Form/skills/Skills";
+import { initialSkills, SkillsObject } from "../components/Form/skills/Skills";
 import {
   AdditionalSectionsType,
   initAdditionalSections,
@@ -41,7 +41,7 @@ export const SiteProvider = ({ children }: { children: ReactNode }) => {
   const [personalInfo, setPersonalInfo] = useLocalStorage("personalInfo", personalInfoInit);
   const [experiences, setExperiences] = useLocalStorage<ExperienceType[]>("experiences", [FakeInitExperience]);
   const [educations, setEducations] = useLocalStorage<EducationType[]>("educations", [FakeInitEducation]);
-  const [skills, setSkills] = useLocalStorage<SkillsObject>("skills", { showLevel: true, data: [] });
+  const [skills, setSkills] = useLocalStorage<SkillsObject>("skills", initialSkills);
   const [summary, setSummary] = useLocalStorage<string>("summary", "");
   const [selectedPatternIndex, setSelectedPatternIndex] = useLocalStorage<number>("selectedPatternIndex", 0);
   const [additionalSections, setAdditionalSections] = useLocalStorage<AdditionalSectionsType>(

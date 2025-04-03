@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, ReactNode, CSSProperties, useState, useMemo } from "react";
-import ReactDOM, { createPortal } from "react-dom";
+import React, { useEffect, ReactNode, CSSProperties, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { Language } from "../../hooks/useCustomContext";
-import Button from "./Button";
+import Button, { ButtonProps } from "./Button";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onOk: () => void;
+  buttons: ButtonProps[];
   children: ReactNode;
   width?: string;
   height?: string;
@@ -14,15 +14,13 @@ interface ModalProps {
   language?: Language;
   style?: CSSProperties;
   draggable?: boolean;
-  okText?: string | ReactNode;
-  cancelText?: string | ReactNode;
+  title?: string | ReactNode;
   maskClosable?: boolean;
   cssClass?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
-  onOk,
   onClose,
   children,
   width,
@@ -31,10 +29,10 @@ const Modal: React.FC<ModalProps> = ({
   language,
   style,
   draggable,
-  okText,
-  cancelText,
   maskClosable = true,
   cssClass,
+  title,
+  buttons,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [draggingPosition, setDraggingPosition] = useState<{ x: string | number; y: string | number }>({
@@ -74,32 +72,8 @@ const Modal: React.FC<ModalProps> = ({
     };
   }
 
-  const drawButtons = useMemo(() => {
-    const defaultButtons: any[] = [
-      {
-        children: okText || language === "he" ? "אישור" : "Confirm",
-        ariaLabel: "ok",
-        onClick: onOk,
-      },
-      {
-        children: cancelText || language === "he" ? "ביטול" : "Cancel",
-        ariaLabel: "cancel",
-        onClick: onClose,
-        variant: "outline",
-      },
-    ];
-
-    return defaultButtons.map((btn, idx) => {
-      return (
-        <Button key={idx} {...btn}>
-          {btn.children}
-        </Button>
-      );
-    });
-  }, [cancelText, okText, onOk, onClose, language]);
-
   const handleOverlayClick = () => {
-    maskClosable && onClose();
+    if (maskClosable) onClose();
   };
 
   // Don't render anything if modal shouldn't be shown
@@ -116,21 +90,16 @@ const Modal: React.FC<ModalProps> = ({
       <div
         draggable={draggable}
         onDragEnd={(e) => draggable && setDraggingPosition({ x: e.clientX, y: e.clientY })}
-        className={`relative w-fit h-fit min-w-[300px] min-h-[200px] flex flex-col justify-between p-3 shadow-lg border bg-white z-20 rounded-lg transition-all duration-500 ease-in-out transform ${
+        className={`w-full max-w-md bg-white rounded-lg border shadow-lg overflow-hidden transition-all duration-500 ease-in-out transform ${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
         } ${cssClass ?? ""}`}
         style={modalClassDynamicStyle}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          className="text-gray-400 absolute top-1 right-1 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-7 h-7 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
-        >
-          ✕
-        </button>
-        <div className="modal-content">{children}</div>
-        <div className="flex gap-5 justify-center">{drawButtons}</div>
+        <ModalHeader onClose={onClose} title={title} />
+
+        <div className="p-6 space-y-6">{children}</div>
+        <ModalFooter buttons={buttons} />
       </div>
     </div>,
     document.body
@@ -138,3 +107,28 @@ const Modal: React.FC<ModalProps> = ({
 };
 
 export default Modal;
+
+const ModalHeader = ({ onClose, title }: { onClose: ModalProps["onClose"]; title: ModalProps["title"] }) => {
+  return (
+    <div className="flex items-center justify-between px-6 py-4 border-b">
+      <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
+      <button onClick={onClose} className="p-1 rounded-sm cursor-pointer hover:bg-gray-100 transition-colors">
+        ✕
+      </button>
+    </div>
+  );
+};
+
+const ModalFooter = ({ buttons }: { buttons: ModalProps["buttons"] }) => {
+  return (
+    <div className="px-6 py-4 border-t flex gap-3">
+      {buttons.map((btn, idx) => {
+        return (
+          <Button key={idx} {...btn} className="px-4 py-2 text-sm">
+            {btn.children}
+          </Button>
+        );
+      })}
+    </div>
+  );
+};

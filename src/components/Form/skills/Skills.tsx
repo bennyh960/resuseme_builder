@@ -1,9 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import PlusIcon from "../../../assets/plusIcon";
 import Title from "../../Shared/Title";
 import ToggleButton from "../../UI/ToggleBtn";
 import SliderControlMap from "../../Shared/SliderControlMap";
+import SkillsSettings from "./SkillsSettings";
 
 export interface SkillType {
   name: string;
@@ -13,12 +14,15 @@ export interface SkillType {
 export type SkillsObject = {
   data: SkillType[];
   showLevel: boolean;
+  levelType: "verbal" | "stars";
+  levelColor: string;
 };
+
+export const initialSkills: SkillsObject = { data: [], showLevel: true, levelType: "verbal", levelColor: "#71717A" };
 
 const dict = {
   title: { he: "כישורים נוספים", en: "Skills" },
-  showExpLvl: { en: "Show experience level", he: "הראה רמה" },
-  hideExpLvl: { en: "Hide experience level", he: "הסתר רמה" },
+
   description: {
     he: "מומלץ לשתף כישורים שידגישו חוזקות שלכם",
     en: "Highlight your most important and applicable professional skills.",
@@ -26,7 +30,8 @@ const dict = {
 };
 
 const SkillsSection: React.FC = () => {
-  const { skills, setSkills, language, setGlobalModal } = useCustomContext();
+  const { skills, setSkills, language } = useCustomContext();
+  const [isOpenSettingsModal, setIsOpenSettingsModal] = useState(false);
 
   const handleSkillLevelChange = (index: number, level: number) => {
     const updatedSkills = [...skills.data];
@@ -71,7 +76,7 @@ const SkillsSection: React.FC = () => {
   const handleAddSkill = () => {
     if (skills.data.length === 10) alert("max skills is 10");
     const data = [...skills.data, { level: 3, name: randomSkill() }];
-    setSkills((prev) => ({ data, showLevel: prev.showLevel }));
+    setSkills((prev) => ({ ...prev, data }));
   };
 
   const handleDelete = (skill: SkillType) => {
@@ -81,22 +86,14 @@ const SkillsSection: React.FC = () => {
     });
   };
 
-  const toggleShowLvl = () => {
-    setSkills((prev) => ({ ...prev, showLevel: !prev.showLevel }));
-  };
-
   return (
     <div className="w-full h-full fade-in">
       <div className="flex w-full justify-between">
         <Title
           title={dict.title[language]}
           description={dict.description[language]}
-          onSettingClick={() => setGlobalModal("skills")}
+          onSettingClick={() => setIsOpenSettingsModal(true)}
         />
-      </div>
-      <div className="flex gap-3 items-center">
-        <span className="mb-1">{dict[skills.showLevel ? "showExpLvl" : "hideExpLvl"][language]}</span>
-        <ToggleButton checked={skills.showLevel} onChange={toggleShowLvl} />
       </div>
 
       <div className="w-full max-h-[65%] overflow-auto">
@@ -117,6 +114,9 @@ const SkillsSection: React.FC = () => {
         <PlusIcon />
         <span onClick={handleAddSkill}> Add Skill</span>
       </button>
+      {isOpenSettingsModal && (
+        <SkillsSettings isOpen={isOpenSettingsModal} onClose={() => setIsOpenSettingsModal(false)} />
+      )}
     </div>
   );
 };

@@ -7,11 +7,10 @@ import Preview from "./components/Preview/Preview";
 import { formRoutes } from "./routes/route";
 
 import { useMemo } from "react";
-import Modal from "./components/UI/Modal";
 import useCustomContext from "./hooks/useCustomContext";
 
 function App() {
-  const { globalModal, setGlobalModal } = useCustomContext();
+  const { personalInfo } = useCustomContext();
   const formRout = useMemo(() => {
     return formRoutes.map((r) => ({ label: r.label, path: r.path as string }));
   }, []);
@@ -29,11 +28,8 @@ function App() {
       </section>
 
       <section className="min-w-1/2 flex-grow sm:w-1/2 sm:flex-grow-0 bg-gray-100 p-10 sticky top-[10px] overflow-auto">
-        <Preview />
+        {personalInfo && <Preview />}
       </section>
-      <Modal isOpen={globalModal !== null} onClose={() => setGlobalModal(null)} onOk={() => "ok"}>
-        {globalModal}
-      </Modal>
     </div>
   );
 }
