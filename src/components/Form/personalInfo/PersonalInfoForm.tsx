@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FormField from "../../../UI/FormField/FormField";
+import FormField from "../../UI/FormField";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
 import PlusIcon from "../../../assets/plusIcon";

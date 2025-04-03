@@ -27,8 +27,8 @@ const PatternD: React.FC = () => {
                 {personalInfo.city}, {personalInfo.country}
               </div>
             )}
-            {personalInfo.linkedin && <div>{personalInfo.linkedin}</div>}
-            {personalInfo.website && <div>{personalInfo.website}</div>}
+            {personalInfo.linkedin && <div>{personalInfo.linkedin.url}</div>}
+            {personalInfo.website && <div>{personalInfo.website.url}</div>}
           </div>
         </div>
       </section>

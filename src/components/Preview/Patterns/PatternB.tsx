@@ -1,12 +1,13 @@
 import React from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
+import StartGroup from "../../UI/StartGroup";
 
-const PatternB = () => {
+const PatternB: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg">
+    <div className="mx-auto bg-white  ">
       {/* Header */}
       <header className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">
@@ -29,7 +30,6 @@ const PatternB = () => {
       {summary && (
         <section className="mb-6">
           <h2 className="text-xl font-semibold border-b-2 border-blue-500 pb-2 mb-4 flex items-center">
-            {/* <User className="mr-2" />  */}
             Professional Summary
           </h2>
           <div dangerouslySetInnerHTML={{ __html: summary }} />
@@ -54,7 +54,9 @@ const PatternB = () => {
               <p className="text-gray-700">
                 {edu.degree} in {edu.fieldOfStudy}
               </p>
-              {edu.description && <p className="text-gray-600 mt-2">{edu.description}</p>}
+              {edu.description && (
+                <p className="text-gray-600 mt-2" dangerouslySetInnerHTML={{ __html: edu.description }} />
+              )}
             </div>
           ))}
         </section>
@@ -70,15 +72,20 @@ const PatternB = () => {
           {experiences.map((exp) => (
             <div key={exp.id} className="mb-4">
               <div className="flex justify-between">
-                <h3 className="font-bold">
-                  {exp.jobTitle} at {exp.employer}
-                </h3>
+                <div className="flex gap-2">
+                  <h3 className="font-bold">
+                    {exp.jobTitle} at {exp.employer}
+                  </h3>
+                  {exp.location && <p className="text-gray-700">({exp.location})</p>}
+                </div>
                 <p className="text-gray-600">
                   {exp.startDate} - {exp.endDate || "Present"}
                 </p>
               </div>
-              <p className="text-gray-700">{exp.location}</p>
-              {exp.workSummary && <p className="text-gray-600 mt-2">{exp.workSummary}</p>}
+
+              {exp.workSummary && (
+                <p className="text-gray-600 mt-2" dangerouslySetInnerHTML={{ __html: exp.workSummary }} />
+              )}
             </div>
           ))}
         </section>
@@ -95,7 +102,7 @@ const PatternB = () => {
             {skills.data.map((skill, index) => (
               <div key={index} className="flex justify-between items-center">
                 <span>{skill.name}</span>
-                {/* <SkillLevel level={skill.level} showLevel={skills.showLevel} /> */}
+                {skills.showLevel && <StartGroup max={5} rate={skill.level} color="black" />}
               </div>
             ))}
           </div>

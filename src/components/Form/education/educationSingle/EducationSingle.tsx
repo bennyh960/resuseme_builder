@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import FormField from "../../../../UI/FormField/FormField";
+import FormField from "../../../UI/FormField";
 import { labels } from "../../../../data/labels";
 import { Language } from "../../../../hooks/useCustomContext";
-import RichTextEditor from "../../../../UI/RichTextEditor/RichTextEditor";
-import CheckBox from "../../../../UI/CheckBox/CheckBox";
-import Checkbox from "../../../../UI/CheckBox/CheckBox";
+import RichTextEditor from "../../../UI/RichTextEditor";
+import CheckBox from "../../../UI/CheckBox";
+import Checkbox from "../../../UI/CheckBox";
 
 export type EducationType = {
   schoolName: string;

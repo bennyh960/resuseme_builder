@@ -86,17 +86,20 @@ const PatternI: React.FC = () => {
             {experiences.map((exp) => (
               <div key={exp.id} className="flex flex-col">
                 <div className="flex justify-between items-baseline">
-                  <h3 className="font-semibold text-gray-800">{exp.jobTitle}</h3>
+                  <div className="flex gap-1">
+                    <h3 className="font-semibold text-gray-800">{exp.jobTitle},</h3>
+                    <div className="flex justify-between items-baseline">
+                      <h4 className="text-blue-600">
+                        {exp.employer}
+                        {exp.location ? `, ${exp.location}` : ""}
+                      </h4>
+                    </div>
+                  </div>
                   <span className="text-sm text-gray-600">
                     {exp.startDate} - {exp.endDate ? exp.endDate : "Present"}
                   </span>
                 </div>
-                <div className="flex justify-between items-baseline">
-                  <h4 className="text-blue-600">
-                    {exp.employer}
-                    {exp.location ? `, ${exp.location}` : ""}
-                  </h4>
-                </div>
+
                 <div dangerouslySetInnerHTML={{ __html: exp.workSummary }} className="mt-1 text-gray-700" />
               </div>
             ))}

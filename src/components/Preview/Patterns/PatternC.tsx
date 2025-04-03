@@ -3,10 +3,10 @@ import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
 import { skillLevelMap } from "../../Shared/SliderControlMap";
 
-const PatternD = () => {
+const PatternD: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
 
-  const renderOptionalField = (value, label) => {
+  const renderOptionalField = (value: string, label: string) => {
     if (value) {
       return (
         <div className="mb-2 flex items-center gap-5">
@@ -130,8 +130,8 @@ const PatternD = () => {
           {renderOptionalField(personalInfo.phone, labels.personalInfo.phone[language])}
           {renderOptionalField(personalInfo.city, labels.personalInfo.city[language])}
           {renderOptionalField(personalInfo.country, labels.personalInfo.country[language])}
-          {renderOptionalField(personalInfo.linkedin, labels.personalInfo.linkedin[language])}
-          {renderOptionalField(personalInfo.website, labels.personalInfo.website[language])}
+          {renderOptionalField(personalInfo.linkedin.url, labels.personalInfo.linkedin[language])}
+          {renderOptionalField(personalInfo.website.url, labels.personalInfo.website[language])}
         </div>
       </section>
 

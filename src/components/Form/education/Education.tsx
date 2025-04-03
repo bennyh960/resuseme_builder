@@ -1,5 +1,5 @@
 import React from "react";
-import { Accordion } from "../../../UI/Accordion/Accordion";
+import { Accordion } from "../../UI/Accordion";
 import useCustomContext from "../../../hooks/useCustomContext";
 import PlusIcon from "../../../assets/plusIcon";
 import TrashIcon from "../../../assets/TrashIcon";

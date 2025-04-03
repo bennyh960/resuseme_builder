@@ -1,8 +1,8 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { Language } from "../../hooks/useCustomContext";
 import TrashIcon from "../../assets/TrashIcon";
-import FormField from "../../UI/FormField/FormField";
-import SliderControl from "../../UI/SlideControl/SlideControl";
+import FormField from "../UI/FormField";
+import SliderControl from "../UI/SlideControl";
 
 export const LangLevelMap = {
   1: { he: "לא רלוונטי", en: "Not applicable" },

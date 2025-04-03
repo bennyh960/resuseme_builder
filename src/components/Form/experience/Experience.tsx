@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Accordion } from "../../../UI/Accordion/Accordion";
+import { Accordion } from "../../UI/Accordion";
 import useCustomContext from "../../../hooks/useCustomContext";
 import ExperienceSingle, { ExperienceType } from "./ExperienceSingle/ExperienceSingle";
 import PlusIcon from "../../../assets/plusIcon";

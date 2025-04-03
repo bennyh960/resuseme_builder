@@ -1,10 +1,15 @@
-import React from "react";
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import React, { useState } from "react";
+import { useEditor, EditorContent, BubbleMenu, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Image from "@tiptap/extension-image";
+import { ListItem } from "@tiptap/extension-list-item";
+import Paragraph from "@tiptap/extension-paragraph";
+import Heading from "@tiptap/extension-heading";
+
+type listStyleType = "circle" | "disc" | "square" | "decimal" | null;
 
 interface RichTextEditorProps {
   initialContent?: string;
@@ -21,9 +26,78 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   className = "",
   maxLength,
 }) => {
+  const CustomListItem = ListItem.extend({
+    addAttributes() {
+      return {
+        listStyleType: {
+          default: "disc",
+          parseHTML: (element) => element.style.listStyleType || "disc",
+          renderHTML: (attributes) => {
+            return {
+              style: `list-style-type: ${attributes.listStyleType}`,
+            };
+          },
+        },
+      };
+    },
+  });
+
+  // Create a custom Paragraph extension with indentation support
+  const IndentableParagraph = Paragraph.extend({
+    addAttributes() {
+      return {
+        indent: {
+          default: 0,
+          parseHTML: (element) => {
+            const indent = element.style.marginLeft;
+            return indent ? parseInt(indent, 10) / 20 : 0; // Convert px to indent level
+          },
+          renderHTML: (attributes) => {
+            if (attributes.indent === 0) {
+              return {};
+            }
+
+            return {
+              style: `margin-left: ${attributes.indent * 20}px`,
+            };
+          },
+        },
+      };
+    },
+  });
+
+  // Create a custom Heading extension with indentation support
+  const IndentableHeading = Heading.extend({
+    addAttributes() {
+      return {
+        indent: {
+          default: 0,
+          parseHTML: (element) => {
+            const indent = element.style.marginLeft;
+            return indent ? parseInt(indent, 10) / 20 : 0; // Convert px to indent level
+          },
+          renderHTML: (attributes) => {
+            if (attributes.indent === 0) {
+              return {};
+            }
+
+            return {
+              style: `margin-left: ${attributes.indent * 20}px`,
+            };
+          },
+        },
+      };
+    },
+  });
+
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        paragraph: false, // Disable default paragraph to use our custom one
+        heading: false, // Disable default heading to use our custom one
+      }),
+      IndentableParagraph,
+      IndentableHeading,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -35,6 +109,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         types: ["heading", "paragraph"],
       }),
       Image,
+      CustomListItem,
     ],
     content: initialContent,
     onUpdate: ({ editor }) => {
@@ -74,6 +149,58 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
 
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  };
+
+  // Indent function - increase indent level
+  const indent = () => {
+    // Get current indent level
+    const currentIndent = editor.getAttributes("paragraph").indent || 0;
+    const headingIndent = editor.getAttributes("heading").indent || 0;
+
+    // Set new indent level (max 10 levels)
+    if (editor.isActive("paragraph")) {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes("paragraph", {
+          indent: Math.min(currentIndent + 1, 10),
+        })
+        .run();
+    } else if (editor.isActive("heading")) {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes("heading", {
+          indent: Math.min(headingIndent + 1, 10),
+        })
+        .run();
+    }
+  };
+
+  // Outdent function - decrease indent level
+  const outdent = () => {
+    // Get current indent level
+    const currentIndent = editor.getAttributes("paragraph").indent || 0;
+    const headingIndent = editor.getAttributes("heading").indent || 0;
+
+    // Set new indent level (min 0 levels)
+    if (editor.isActive("paragraph")) {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes("paragraph", {
+          indent: Math.max(currentIndent - 1, 0),
+        })
+        .run();
+    } else if (editor.isActive("heading")) {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes("heading", {
+          indent: Math.max(headingIndent - 1, 0),
+        })
+        .run();
+    }
   };
 
   return (
@@ -163,25 +290,22 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
         <div className="w-px h-6 mx-1 bg-gray-300" />
 
+        {/* Indent/Outdent */}
+        <button onClick={outdent} className="p-2 rounded hover:bg-gray-200" title="Decrease indent">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M11 17h10v-2H11v2zm-8-5l4 4V8l-4 4zm0 9h18v-2H3v2zM3 3v2h18V3H3zm8 6h10V7H11v2zm0 4h10v-2H11v2z" />
+          </svg>
+        </button>
+        <button onClick={indent} className="p-2 rounded hover:bg-gray-200" title="Increase indent">
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M3 21h18v-2H3v2zM3 8v8l4-4-4-4zm8 9h10v-2H11v2zM3 3v2h18V3H3zm8 6h10V7H11v2zm0 4h10v-2H11v2z" />
+          </svg>
+        </button>
+
+        <div className="w-px h-6 mx-1 bg-gray-300" />
+
         {/* Lists */}
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={`p-2 rounded hover:bg-gray-200 ${editor.isActive("bulletList") ? "bg-gray-200" : ""}`}
-          title="Bullet list"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z" />
-          </svg>
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={`p-2 rounded hover:bg-gray-200 ${editor.isActive("orderedList") ? "bg-gray-200" : ""}`}
-          title="Numbered list"
-        >
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z" />
-          </svg>
-        </button>
+        <RenderListStyleButtons editor={editor} />
 
         <div className="w-px h-6 mx-1 bg-gray-300" />
 
@@ -226,6 +350,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
             <button onClick={setLink} className={`p-2 ${editor.isActive("link") ? "text-blue-500" : "text-gray-600"}`}>
               Link
             </button>
+            <button onClick={indent} className="p-2 text-gray-600">
+              →
+            </button>
+            <button onClick={outdent} className="p-2 text-gray-600">
+              ←
+            </button>
           </div>
         </BubbleMenu>
       )}
@@ -234,5 +364,68 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     </div>
   );
 };
-
 export default RichTextEditor;
+
+const RenderListStyleButtons = ({ editor }: { editor: Editor }) => {
+  const [activeListStyle, setActiveListStyle] = useState<listStyleType>(null);
+
+  const setListStyle = (style: listStyleType) => {
+    if (style !== null) {
+      editor.chain().focus().updateAttributes("listItem", { listStyleType: style }).run();
+    }
+    toggleListStyle(style);
+  };
+
+  const toggleListStyle = (style: listStyleType) => {
+    if (activeListStyle === style) {
+      setActiveListStyle(null); // Deselect if already active
+    } else {
+      setActiveListStyle(style);
+    }
+  };
+  return (
+    <>
+      <button
+        onClick={() => setListStyle("disc")}
+        className={`p-2 rounded hover:bg-gray-200 ${activeListStyle === "disc" ? "bg-gray-200" : ""}`}
+        title="Bullet list"
+      >
+        <svg className="w-4 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <circle cx="4" cy="6" r="1.5" />
+          <circle cx="4" cy="12" r="1.5" />
+          <circle cx="4" cy="18" r="1.5" />
+          <line x1="7" y1="6" x2="21" y2="6" />
+          <line x1="7" y1="12" x2="21" y2="12" />
+          <line x1="7" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <button
+        onClick={() => setListStyle("circle")}
+        className={`p-2 rounded hover:bg-gray-200 ${activeListStyle === "circle" ? "bg-gray-200" : ""}`}
+        title="Bullet list"
+      >
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => setListStyle("decimal")}
+        className={`p-2 rounded hover:bg-gray-200 ${activeListStyle === "decimal" ? "bg-gray-200" : ""}`}
+        title="Numbered list"
+      >
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => setListStyle("square")}
+        className={`p-2 rounded hover:bg-gray-200 ${activeListStyle === "square" ? "bg-gray-200" : ""}`}
+        title="Square list"
+      >
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z" />
+        </svg>
+      </button>
+    </>
+  );
+};

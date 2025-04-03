@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import PlusIcon from "../../../assets/plusIcon";
 import Title from "../../Shared/Title";
-import ToggleButton from "../../../UI/ToggleBtn/ToggleBtn";
+import ToggleButton from "../../UI/ToggleBtn";
 import SliderControlMap from "../../Shared/SliderControlMap";
 
 export interface SkillType {
@@ -26,7 +26,7 @@ const dict = {
 };
 
 const SkillsSection: React.FC = () => {
-  const { skills, setSkills, language } = useCustomContext();
+  const { skills, setSkills, language, setGlobalModal } = useCustomContext();
 
   const handleSkillLevelChange = (index: number, level: number) => {
     const updatedSkills = [...skills.data];
@@ -87,7 +87,13 @@ const SkillsSection: React.FC = () => {
 
   return (
     <div className="w-full h-full fade-in">
-      <Title title={dict.title[language]} description={dict.description[language]} />
+      <div className="flex w-full justify-between">
+        <Title
+          title={dict.title[language]}
+          description={dict.description[language]}
+          onSettingClick={() => setGlobalModal("skills")}
+        />
+      </div>
       <div className="flex gap-3 items-center">
         <span className="mb-1">{dict[skills.showLevel ? "showExpLvl" : "hideExpLvl"][language]}</span>
         <ToggleButton checked={skills.showLevel} onChange={toggleShowLvl} />

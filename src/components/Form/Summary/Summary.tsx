@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useCustomContext from "../../../hooks/useCustomContext";
 import Title from "../../Shared/Title";
-import RichTextEditor from "../../../UI/RichTextEditor/RichTextEditor";
+import RichTextEditor from "../../UI/RichTextEditor";
 
 const dict = {
   title: { he: "תקציר", en: "Summary" },

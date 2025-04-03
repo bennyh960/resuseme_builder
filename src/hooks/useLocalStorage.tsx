@@ -7,7 +7,7 @@ type LocalStorageKey =
   | "summary"
   | "skills"
   | "additionalSections"
-  | "selectedPattern";
+  | "selectedPatternIndex";
 
 /**
  * Custom hook to manage state synchronized with localStorage.

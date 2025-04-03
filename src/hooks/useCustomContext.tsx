@@ -11,6 +11,8 @@ import {
 
 export type Language = "en" | "he";
 
+type modalTypes = "skills" | "language" | null;
+
 export interface SiteContextType {
   children?: JSX.Element;
   language: Language;
@@ -27,6 +29,10 @@ export interface SiteContextType {
   setSummary: Dispatch<SetStateAction<string>>;
   additionalSections: AdditionalSectionsType;
   setAdditionalSections: Dispatch<SetStateAction<AdditionalSectionsType>>;
+  selectedPatternIndex: number;
+  setSelectedPatternIndex: Dispatch<SetStateAction<number>>;
+  globalModal: modalTypes;
+  setGlobalModal: Dispatch<SetStateAction<modalTypes>>;
 }
 
 export const SiteContext = createContext<SiteContextType>({} as SiteContextType);
@@ -37,10 +43,12 @@ export const SiteProvider = ({ children }: { children: ReactNode }) => {
   const [educations, setEducations] = useLocalStorage<EducationType[]>("educations", [FakeInitEducation]);
   const [skills, setSkills] = useLocalStorage<SkillsObject>("skills", { showLevel: true, data: [] });
   const [summary, setSummary] = useLocalStorage<string>("summary", "");
+  const [selectedPatternIndex, setSelectedPatternIndex] = useLocalStorage<number>("selectedPatternIndex", 0);
   const [additionalSections, setAdditionalSections] = useLocalStorage<AdditionalSectionsType>(
     "additionalSections",
     initAdditionalSections
   );
+  const [globalModal, setGlobalModal] = useState<modalTypes>(null);
 
   const [language, setLanguage] = useState<Language>("en");
   return (
@@ -60,6 +68,10 @@ export const SiteProvider = ({ children }: { children: ReactNode }) => {
         skills,
         additionalSections,
         setAdditionalSections,
+        selectedPatternIndex,
+        setSelectedPatternIndex,
+        globalModal,
+        setGlobalModal,
       }}
     >
       {children}

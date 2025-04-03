@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import Title from "../../Shared/Title";
 import useCustomContext from "../../../hooks/useCustomContext";
-import { Accordion } from "../../../UI/Accordion/Accordion";
+import { Accordion } from "../../UI/Accordion";
 import checkIcon from "../../../assets/circle-check.svg";
 import ListIcon from "../../../assets/ListIcon";
 import LanguagesIcon from "../../../assets/LanguagesIcon";
