@@ -9,9 +9,9 @@ const PatternD: React.FC = () => {
   const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-100 text-gray-800">
+    <div className="mx-auto  text-gray-800 flex flex-col gap-4">
       {/* Personal Information Section */}
-      <section className="personal-info mb-10">
+      <section className="personal-info">
         <div className="flex justify-between items-center mb-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
@@ -35,7 +35,7 @@ const PatternD: React.FC = () => {
 
       {/* Professional Summary Section */}
       {summary && (
-        <section className="professional-summary bg-white rounded-lg p-6 mb-10 shadow-md">
+        <section className="professional-summary bg-white rounded-lg p-6 shadow-md">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">{labels.professionalSummary.form[language]}</h3>
           <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: summary }} />
         </section>
@@ -43,7 +43,7 @@ const PatternD: React.FC = () => {
 
       {/* Experience Section */}
       {experiences.length > 0 && (
-        <section className="experience bg-white rounded-lg p-6 mb-10 shadow-md">
+        <section className="experience bg-white rounded-lg p-6 shadow-md">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">{labels.experience.experienceTitle[language]}</h3>
           {experiences.map((exp) => (
             <div key={exp.id} className="experience-item mb-6">
@@ -65,7 +65,7 @@ const PatternD: React.FC = () => {
 
       {/* Education Section */}
       {educations.length > 0 && (
-        <section className="education bg-white rounded-lg p-6 mb-10 shadow-md">
+        <section className="education bg-white rounded-lg p-6 shadow-md">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">{labels.education.educationTitle[language]}</h3>
           {educations.map((edu) => (
             <div key={edu.id} className="education-item mb-6">
@@ -93,11 +93,11 @@ const PatternD: React.FC = () => {
 
       {/* Skills Section */}
       {skills.data.length > 0 && (
-        <section className="skills bg-white rounded-lg p-6 mb-10 shadow-md">
+        <section className="skills bg-white rounded-lg p-6 shadow-md">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">{labels.skills.skillsTitle[language]}</h3>
-          <ul className="space-y-4">
+          <ul className="grid grid-cols-2">
             {skills.data.map((skill, idx) => (
-              <li key={idx} className="flex justify-between items-center">
+              <li key={idx} className="flex justify-between items-center mr-2">
                 <div className="w-2/3">
                   <strong>{skill.name}</strong>
                 </div>
@@ -112,7 +112,7 @@ const PatternD: React.FC = () => {
 
       {/* Languages Section */}
       {additionalSections.languages.length > 0 && (
-        <section className="languages bg-white rounded-lg p-6 mb-10 shadow-md">
+        <section className="languages bg-white rounded-lg p-6 shadow-md">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">
             {labels.additionalSection.languages.title[language]}
           </h3>

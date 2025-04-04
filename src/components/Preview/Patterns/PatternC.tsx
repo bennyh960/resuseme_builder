@@ -118,7 +118,7 @@ const PatternD: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
+    <div className="mx-auto bg-white">
       {/* Personal Information */}
       <section className="mb-8">
         <h1 className="text-3xl font-bold text-indigo-900 mb-2">

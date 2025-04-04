@@ -9,7 +9,7 @@ const StarIcon = ({ stroke = "currentColor", fill = "none" }: { fill?: string; s
       viewBox="0 0 24 24"
       fill={fill}
       stroke={stroke}
-      strokeWidth="2"
+      strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="lucide lucide-star-icon lucide-star"

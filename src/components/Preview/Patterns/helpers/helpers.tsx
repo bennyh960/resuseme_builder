@@ -24,7 +24,6 @@ export const GenerateSkills = ({
   } else if (type === "verbal") {
     return (
       <span style={{ ...style, color }} className={className}>
-        {" "}
         {skillLevelMap[level as keyof typeof skillLevelMap][language]}
       </span>
     );

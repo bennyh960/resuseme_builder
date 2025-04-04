@@ -7,6 +7,7 @@ import ListIcon from "../../../assets/ListIcon";
 import LanguagesIcon from "../../../assets/LanguagesIcon";
 import MedalIcon from "../../../assets/MedalIcon";
 import AdditionalLangSection from "./Languages/AdditionalLanguages";
+import AdditionalCertifications from "./Certifications/AdditionalCertifications";
 
 export type AdditionalSectionsType = {
   languages: { name: string; level: number }[];
@@ -45,7 +46,7 @@ const AdditionalSections = () => {
     },
     {
       id: "certifications",
-      content: "",
+      content: <AdditionalCertifications />,
       title: (
         <AdditionalTitleCard
           title="Certifications"

@@ -1,29 +1,26 @@
 import React from "react";
-import useCustomContext, { Language } from "../../../hooks/useCustomContext";
+import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
-import { skillLevelMap, LangLevelMap } from "../../Shared/SliderControlMap";
-import StartGroup from "../../UI/StartGroup";
-import { SkillsObject } from "../../Form/skills/Skills";
+import { LangLevelMap } from "../../Shared/SliderControlMap";
 import { GenerateSkills } from "./helpers/helpers";
 
 // Helper function to map skill level and language level
 
 const PatternA: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
-  // const getSkillLevelText = (level: number) => skillLevelMap[level][language];
   const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
-    <div className="mx-auto bg-white text-gray-800">
+    <div className="mx-auto bg-white text-gray-800 flex flex-col gap-6 justify-between">
       {/* Personal Information Section */}
-      <section className="personal-info mb-10">
-        <div className="header mb-4 text-center">
+      <section className="personal-info">
+        <div className="header mb-3 text-center">
           <h1 className="text-3xl font-bold text-gray-800">
             {personalInfo.firstName} {personalInfo.lastName}
           </h1>
           <h2 className="text-xl text-gray-500">{personalInfo.jobTitle}</h2>
         </div>
-        <div className="contact-info space-y-2 flex gap-5 justify-between flex-wrap w-full">
+        <div className="contact-info flex gap-2 justify-between flex-wrap w-full">
           {personalInfo.email && (
             <div>
               <strong>{labels.personalInfo.email[language]}:</strong> {personalInfo.email}
@@ -60,14 +57,14 @@ const PatternA: React.FC = () => {
       </section>
       {/* Professional Summary Section */}
       {summary && (
-        <section className="professional-summary mb-10">
+        <section className="professional-summary">
           <h3 className="text-xl font-semibold mb-3">{labels.professionalSummary.form[language]}</h3>
           <p dangerouslySetInnerHTML={{ __html: summary }} />
         </section>
       )}
       {/* Experience Section */}
       {experiences.length > 0 && (
-        <section className="experience mb-10">
+        <section className="experience">
           <h3 className="text-xl font-semibold mb-3">{labels.experience.experienceTitle[language]}</h3>
           {experiences.map((exp) => (
             <div key={exp.id} className="experience-card p-5 mb-4 bg-gray-100 rounded-lg shadow-md">
@@ -88,7 +85,7 @@ const PatternA: React.FC = () => {
       )}
       {/* Education Section */}
       {educations.length > 0 && (
-        <section className="education mb-10">
+        <section className="education">
           <h3 className="text-xl font-semibold mb-3">{labels.education.educationTitle[language]}</h3>
           {educations.map((edu) => (
             <div key={edu.id} className="education-card p-5 mb-4 bg-gray-100 rounded-lg shadow-md">
@@ -115,12 +112,12 @@ const PatternA: React.FC = () => {
       )}
       {/* Skills Section */}
       {skills.data.length > 0 && (
-        <section className="skills mb-10">
+        <section className="skills">
           <h3 className="text-xl font-semibold mb-3">{labels.skills.skillsTitle[language]}</h3>
-          <ul className="grid grid-cols-2 gap-2">
+          <ul className="grid grid-cols-2">
             {skills.data.map((skill, idx) => (
-              <li key={idx} className="flex items-center  p-2">
-                <strong className="flex-1 min-w-0">{skill.name}</strong>
+              <li key={idx} className="flex items-center pr-2 pb-2">
+                <strong className="flex-1">{skill.name}</strong>
                 <GenerateSkills
                   color={skills.levelColor}
                   language={language}
@@ -135,9 +132,9 @@ const PatternA: React.FC = () => {
       )}
       {/* Languages Section */}
       {additionalSections.languages.length > 0 && (
-        <section className="languages mb-10">
+        <section className="languages">
           <h3 className="text-xl font-semibold mb-3">{labels.additionalSection.languages.title[language]}</h3>
-          <ul className="space-y-2">
+          <ul className="">
             {additionalSections.languages.map((lang, idx) => (
               <li key={idx} className="text-lg">
                 <strong>{lang.name}</strong>
