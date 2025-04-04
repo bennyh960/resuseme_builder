@@ -1,13 +1,16 @@
 import React from "react";
-import useCustomContext from "../../../hooks/useCustomContext";
+import useCustomContext, { Language } from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
 import { skillLevelMap, LangLevelMap } from "../../Shared/SliderControlMap";
+import StartGroup from "../../UI/StartGroup";
+import { SkillsObject } from "../../Form/skills/Skills";
+import { GenerateSkills } from "./helpers/helpers";
 
 // Helper function to map skill level and language level
 
 const PatternA: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
-  const getSkillLevelText = (level: number) => skillLevelMap[level][language];
+  // const getSkillLevelText = (level: number) => skillLevelMap[level][language];
   const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
@@ -114,11 +117,17 @@ const PatternA: React.FC = () => {
       {skills.data.length > 0 && (
         <section className="skills mb-10">
           <h3 className="text-xl font-semibold mb-3">{labels.skills.skillsTitle[language]}</h3>
-          <ul className="space-y-2">
+          <ul className="grid grid-cols-2 gap-2">
             {skills.data.map((skill, idx) => (
-              <li key={idx} className="text-lg">
-                <strong>{skill.name}</strong>
-                {skills.showLevel && <span className="italic text-gray-500"> - {getSkillLevelText(skill.level)}</span>}
+              <li key={idx} className="flex items-center  p-2">
+                <strong className="flex-1 min-w-0">{skill.name}</strong>
+                <GenerateSkills
+                  color={skills.levelColor}
+                  language={language}
+                  type={skills.levelType}
+                  level={skill.level}
+                  className="italic text-gray-500"
+                />
               </li>
             ))}
           </ul>

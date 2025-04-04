@@ -34,24 +34,10 @@ const Modal: React.FC<ModalProps> = ({
   title,
   buttons,
 }) => {
-  const [showModal, setShowModal] = useState(false);
   const [draggingPosition, setDraggingPosition] = useState<{ x: string | number; y: string | number }>({
     x: `calc(50% - ${width})`,
     y: `calc(50% - ${height})`,
   });
-
-  // Handle transition with useEffect
-  useEffect(() => {
-    if (isOpen) {
-      setShowModal(true);
-    } else {
-      // Delay hiding the modal until after the transition completes
-      const timer = setTimeout(() => {
-        setShowModal(false);
-      }, 1000); // This should match your transition duration
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
 
   let modalClassDynamicStyle: CSSProperties = {
     width: width ? width : undefined,
@@ -77,11 +63,19 @@ const Modal: React.FC<ModalProps> = ({
   };
 
   // Don't render anything if modal shouldn't be shown
-  if (!showModal && !isOpen) return null;
+  // if (!showModal && !isOpen) return null;
+
+  const handelDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    if (draggable) {
+      // const rect = e.currentTarget.getBoundingClientRect();
+
+      setDraggingPosition({ x: e.clientX, y: e.clientY });
+    }
+  };
 
   return createPortal(
     <div
-      className={`z-10 w-screen h-screen fixed top-0 left-0 bg-[rgba(0,0,0,0.6)] inset-0 flex items-center justify-center transition-opacity duration-500 ${
+      className={`z-10 w-screen h-screen fixed top-0 left-0 bg-[rgba(0,0,0,0.6)] inset-0 flex items-center justify-center transition-all duration-500 ${
         isOpen ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleOverlayClick}
@@ -89,9 +83,9 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         draggable={draggable}
-        onDragEnd={(e) => draggable && setDraggingPosition({ x: e.clientX, y: e.clientY })}
+        onDragEndCapture={handelDrag}
         className={`w-full max-w-md bg-white rounded-lg border shadow-lg overflow-hidden transition-all duration-500 ease-in-out transform ${
-          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
         } ${cssClass ?? ""}`}
         style={modalClassDynamicStyle}
         onClick={(e) => e.stopPropagation()}

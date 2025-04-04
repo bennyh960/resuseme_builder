@@ -114,9 +114,7 @@ const SkillsSection: React.FC = () => {
         <PlusIcon />
         <span onClick={handleAddSkill}> Add Skill</span>
       </button>
-      {isOpenSettingsModal && (
-        <SkillsSettings isOpen={isOpenSettingsModal} onClose={() => setIsOpenSettingsModal(false)} />
-      )}
+      <SkillsSettings isOpen={isOpenSettingsModal} onClose={() => setIsOpenSettingsModal(false)} />
     </div>
   );
 };

@@ -5,3 +5,5 @@ const GeneralSettings = () => {
 };
 
 export default GeneralSettings;
+
+// Link color ,title color , text color

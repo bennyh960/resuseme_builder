@@ -45,9 +45,9 @@ const Drawer = ({ isOpen, onClose, title, children, position = "left" }: IDrawer
       >
         {/* Header - Fixed, Does Not Scroll */}
         <div className="h-16 px-4 flex items-center justify-between bg-gray-100 mb-1 dark:bg-gray-800 shadow-md">
-          <h5 id="drawer-label" className="text-base font-semibold text-gray-500 dark:text-gray-400">
+          <div id="drawer-label" className="text-base font-semibold text-gray-500 dark:text-gray-400">
             {title}
-          </h5>
+          </div>
           <button
             type="button"
             onClick={onClose}

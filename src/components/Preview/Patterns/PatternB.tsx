@@ -3,10 +3,10 @@ import useCustomContext from "../../../hooks/useCustomContext";
 import { labels } from "../../../data/labels";
 import StartGroup from "../../UI/StartGroup";
 import { LangLevelMap, skillLevelMap } from "../../Shared/SliderControlMap";
+import { GenerateSkills } from "./helpers/helpers";
 
 const PatternB: React.FC = () => {
   const { personalInfo, skills, additionalSections, educations, experiences, summary, language } = useCustomContext();
-  const getSkillLevelText = (level: number) => skillLevelMap[level][language];
   const getLanguageLevelText = (level: number) => LangLevelMap[level][language];
 
   return (
@@ -105,12 +105,15 @@ const PatternB: React.FC = () => {
             {skills.data.map((skill, index) => (
               <div key={index} className="flex justify-between items-center">
                 <span>{skill.name}</span>
-                {skills.showLevel &&
-                  (skills.levelType === "stars" ? (
-                    <StartGroup max={5} rate={skill.level} color={skills.levelColor} />
-                  ) : (
-                    <span style={{ color: skills.levelColor }}>{getSkillLevelText(skill.level)}</span>
-                  ))}
+                {skills.showLevel && (
+                  <GenerateSkills
+                    color={skills.levelColor}
+                    language={language}
+                    type={skills.levelType}
+                    level={skill.level}
+                    className=""
+                  />
+                )}
               </div>
             ))}
           </div>
